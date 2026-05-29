@@ -180,23 +180,12 @@
   .quick-options { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.8rem; }
   .quick-btn { padding:.3rem .8rem; background:rgba(77,145,232,.1); border:1px solid var(--navy-border); border-radius:100px; font-size:.78rem; color:var(--text); cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; }
   .quick-btn:hover { background:var(--accent); color:white; border-color:var(--accent); }
-  /* LOADING */
-  .loading-overlay { position:fixed; inset:0; background:var(--navy); z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; transition:opacity .5s; }
-  .loading-overlay.hide { opacity:0; pointer-events:none; }
-  .loading-crown { font-size:3rem; animation:float 1.5s ease-in-out infinite; }
-  .loading-text { font-family:'Playfair Display',serif; color:var(--gold-light); font-size:1.1rem; font-style:italic; }
-  .loading-dots { display:inline-block; }
   ::-webkit-scrollbar { width:6px; }
   ::-webkit-scrollbar-track { background:var(--navy); }
   ::-webkit-scrollbar-thumb { background:var(--navy-border); border-radius:3px; }
 </style>
 </head>
 <body>
-
-<div class="loading-overlay" id="loading-overlay">
-  <div class="loading-crown">👑</div>
-  <div class="loading-text">Carregando a festa da Eloisa<span class="loading-dots" id="ldots">...</span></div>
-</div>
 
 <header>
   <span class="crown">👑</span>
@@ -457,10 +446,6 @@ let isTypingNotes = false;
 
 
 async function loadData() {
-  // Anima os pontinhos
-  let d=0; const ldots=document.getElementById('ldots');
-  const ldotTimer = setInterval(()=>{ d=(d+1)%4; if(ldots) ldots.textContent='.'.repeat(d+1); },400);
-
   try {
     const { data, error } = await _supabase.from('festas').select('*').eq('id',1).single();
     if (!error && data && data.dados_festa) {
@@ -473,16 +458,8 @@ async function loadData() {
   } catch(e) {
     const saved = localStorage.getItem('eloisa15anos');
     if (saved) state = { ...state, ...JSON.parse(saved) };
-    showSave('⚠️ Sem conexão com servidor');
   }
-
-  clearInterval(ldotTimer);
   renderAll();
-
-  // Esconder loading com fade
-  const ov = document.getElementById('loading-overlay');
-  if (ov) { ov.classList.add('hide'); setTimeout(()=>ov.remove(), 600); }
-
   setInterval(fetchFromSupabase, 2000);
   setInterval(updateCountdown, 1000);
 }
