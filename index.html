@@ -1,925 +1,591 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ 15 Anos da Eloisa</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --navy-deep: #0b1a30;
-    --navy-medium: #152946;
-    --navy-light: #1f385c;
-    --gold: #c9a96e;
-    --gold-light: #f0deb4;
-    --cream: #f4f7fa;
-    --text-dark: #0f1e36;
-    --text-muted: #5c6f84;
-    --white: #ffffff;
-    --card-bg: rgba(255, 255, 255, 0.9);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15 Anos de Eloisa</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --accent: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text-dark);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      padding: 20px;
+      line-height: 1.5;
+    }
 
-  /* === BACKGROUND NOBRE === */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 10% 10%, #e2ebf5 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 90% 90%, #f7ebd9 0%, transparent 60%),
-      radial-gradient(ellipse 50% 50% at 50% 50%, #fafcff 0%, transparent 100%);
-    z-index: -1;
-  }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--bg-secondary), #0f172a);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
 
-  /* === HEADER === */
-  header {
-    text-align: center;
-    padding: 3rem 2rem 2rem;
-    position: relative;
-  }
+    header h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+    }
 
-  .crown {
-    font-size: 2.5rem;
-    display: block;
-    animation: float 3s ease-in-out infinite;
-  }
+    header h1 span {
+      color: var(--accent);
+    }
 
-  @keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
+    header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
 
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.2rem, 6vw, 4rem);
-    color: var(--navy-deep);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin: 0.5rem 0 0.3rem;
-  }
+    .countdown-btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
 
-  header h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
+    .btn-date {
+      background: transparent;
+      border: 1px dashed var(--accent);
+      color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+    }
 
-  header p.subtitle {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    font-style: italic;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
+    .btn-date:hover {
+      background: var(--accent);
+      color: var(--bg-primary);
+    }
 
-  /* === CONTADOR DE DIAS === */
-  .countdown-box {
-    margin-top: 0.8rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--navy-deep);
-    font-weight: bold;
-    display: none;
-  }
-  .countdown-box span {
-    color: var(--gold);
-    background: var(--navy-deep);
-    padding: 0.2rem 0.6rem;
-    border-radius: 6px;
-    margin: 0 0.2rem;
-  }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
 
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    margin: 1.5rem auto;
-    max-width: 300px;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold));
-  }
-  .divider::after { background: linear-gradient(90deg, var(--gold), transparent); }
-  .divider span { color: var(--gold); font-size: 1.1rem; }
+    .card-dash {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
 
-  .date-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--navy-deep);
-    color: var(--gold-light);
-    padding: 0.5rem 1.5rem;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid var(--gold);
-    font-family: 'DM Sans', sans-serif;
-  }
-  .date-badge:hover { transform: scale(1.05); background: var(--gold); color: var(--navy-deep); }
+    .card-dash p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
 
-  /* === PROGRESS === */
-  .progress-section {
-    max-width: 900px;
-    margin: 0 auto 2.5rem;
-    padding: 0 1.5rem;
-  }
+    .card-dash h2 {
+      font-size: 1.5rem;
+      color: var(--text-main);
+    }
 
-  .progress-card {
-    background: var(--navy-deep);
-    border-radius: 20px;
-    padding: 1.5rem 2rem;
-    border: 1px solid var(--gold);
-    box-shadow: 0 10px 30px rgba(11, 26, 48, 0.15);
-    color: var(--white);
-  }
+    .main-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
 
-  .progress-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--gold-light);
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
-  }
+    .panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .progress-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-  }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
 
-  .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: 0.2rem;
-  }
+    .panel-header h3 {
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  .progress-bar-wrap {
-    background: var(--navy-light);
-    border-radius: 100px;
-    height: 8px;
-    overflow: hidden;
-    border: 0.5px solid rgba(201, 169, 174, 0.2);
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
-    border-radius: 100px;
-    transition: width 0.8s ease;
-  }
+    .badge {
+      background: var(--bg-primary);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
 
-  /* === MAIN GRID === */
-  .main-grid {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem 4rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
+    .input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
 
-  /* === CARDS === */
-  .card {
-    background: var(--white);
-    backdrop-filter: blur(10px);
-    border-radius: 24px;
-    border: 1px solid rgba(11, 26, 48, 0.1);
-    box-shadow: 0 4px 20px rgba(11, 26, 48, 0.05);
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .card:hover { 
-    transform: translateY(-4px); 
-    box-shadow: 0 12px 40px rgba(11, 26, 48, 0.12);
-    border-color: rgba(201, 169, 110, 0.4);
-  }
+    input, select {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+    }
 
-  .card-header {
-    padding: 1.2rem 1.5rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    border-bottom: 1px solid rgba(11, 26, 48, 0.08);
-  }
+    input {
+      flex: 1;
+    }
 
-  .card-icon {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-  }
+    input::placeholder {
+      color: #64748b;
+    }
 
-  .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--navy-deep);
-    font-weight: bold;
-  }
+    button.btn-add {
+      background: var(--text-main);
+      color: var(--bg-primary);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
 
-  .card-count {
-    margin-left: auto;
-    background: var(--navy-deep);
-    color: var(--gold-light);
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 0.2rem 0.7rem;
-    border-radius: 100px;
-    border: 0.5px solid var(--gold);
-  }
+    button.btn-add:hover {
+      background: #e2e8f0;
+    }
 
-  .card-body { padding: 1.2rem 1.5rem 1.5rem; }
+    .list-items {
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-  /* === LIST ELEMENTS === */
-  .guest-list, .check-list, .budget-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-primary);
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
 
-  .guest-item, .check-item, .budget-item {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 12px;
-    background: rgba(21, 41, 70, 0.04);
-    transition: background 0.2s;
-  }
-  .guest-item:hover, .check-item:hover, .budget-item:hover { background: rgba(201, 169, 110, 0.12); }
+    .item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-  .guest-status { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .status-confirmado { background: #2e7d32; }
-  .status-aguardando { background: var(--gold); }
-  .status-cancelado { background: #c62828; }
+    .item-title {
+      font-size: 0.9rem;
+    }
 
-  .guest-name, .check-label, .budget-name { flex: 1; font-size: 0.9rem; color: var(--navy-deep); }
-  .check-label.done { text-decoration: line-through; color: var(--text-muted); }
+    .item-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
 
-  .guest-badge {
-    font-size: 0.72rem;
-    padding: 0.15rem 0.5rem;
-    border-radius: 100px;
-    font-weight: 500;
-  }
-  .badge-confirmado { background: #e8f5e9; color: #2e7d32; }
-  .badge-aguardando { background: var(--gold-light); color: #7a5c20; }
-  .badge-cancelado { background: #ffebee; color: #c62828; }
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  .guest-remove, .check-remove, .budget-remove {
-    background: none; border: none; cursor: pointer;
-    color: var(--text-muted); font-size: 1rem; opacity: 0;
-    transition: opacity 0.2s; padding: 0 0.2rem;
-  }
-  .guest-item:hover .guest-remove, .check-item:hover .check-remove, .budget-item:hover .budget-remove { opacity: 1; }
+    .status-select {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      cursor: pointer;
+    }
 
-  /* === INPUT Area === */
-  .input-row { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .btn-del {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0 5px;
+    }
 
-  .inp {
-    flex: 1;
-    padding: 0.6rem 1rem;
-    border: 1.5px solid rgba(11, 26, 48, 0.15);
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    background: white;
-    color: var(--navy-deep);
-    outline: none;
-    transition: all 0.2s;
-  }
-  .inp:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.2); }
-
-  .inp-select {
-    padding: 0.6rem 0.8rem;
-    border: 1.5px solid rgba(11, 26, 48, 0.15);
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    background: white;
-    color: var(--navy-deep);
-    outline: none;
-    cursor: pointer;
-  }
-
-  .btn-add {
-    padding: 0.6rem 1rem;
-    background: var(--navy-deep);
-    color: var(--gold-light);
-    border: 1px solid var(--gold);
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .btn-add:hover { background: var(--gold); color: var(--navy-deep); }
-
-  .check-item input[type="checkbox"] {
-    width: 18px; height: 18px;
-    accent-color: var(--navy-deep);
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .budget-value { font-weight: 600; color: var(--navy-deep); font-size: 0.9rem; }
-
-  .inp-money {
-    padding: 0.6rem 0.8rem;
-    border: 1.5px solid rgba(11, 26, 48, 0.15);
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    background: white;
-    color: var(--navy-deep);
-    outline: none;
-    width: 90px;
-  }
-
-  .card-full { grid-column: 1 / -1; }
-
-  /* === MODAL === */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(11, 26, 48, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--white);
-    border-radius: 24px;
-    padding: 2rem;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 20px 60px rgba(11, 26, 48, 0.2);
-    border: 1px solid var(--gold);
-  }
-  .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy-deep); margin-bottom: 1.2rem; }
-  .modal label { display: block; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .modal .inp { width: 100%; margin-bottom: 1rem; }
-  .modal-btns { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 0.5rem; }
-  
-  .btn-cancel {
-    padding: 0.6rem 1.2rem;
-    border: 1.5px solid rgba(11, 26, 48, 0.2);
-    border-radius: 12px;
-    background: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text-muted);
-    font-size: 0.88rem;
-  }
-
-  .empty-msg { text-align: center; color: var(--text-muted); font-size: 0.85rem; font-style: italic; padding: 0.5rem; }
-
-  .save-notice {
-    position: fixed; bottom: 1.5rem; right: 1.5rem;
-    background: var(--navy-deep); color: var(--gold-light);
-    border: 1px solid var(--gold);
-    padding: 0.7rem 1.3rem; border-radius: 100px;
-    font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
-    opacity: 0; transform: translateY(10px);
-    transition: all 0.3s; z-index: 50; pointer-events: none;
-  }
-  .save-notice.show { opacity: 1; transform: translateY(0); }
-
-  @media (max-width: 600px) {
-    .main-grid { grid-template-columns: 1fr; }
-    .card-full { grid-column: 1; }
-  }
-</style>
+    .btn-del:hover {
+      color: #f87171;
+    }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <span class="crown">👑</span>
-  <h1>15 Anos de <em>Eloisa</em></h1>
-  <p class="subtitle">Organizador da festa dos sonhos</p>
-  
-  <!-- CONTADOR DINÂMICO -->
-  <div class="countdown-box" id="countdown-area">
-    Faltam <span id="days-number">0</span> dias para o grande dia!
-  </div>
-
-  <div class="divider"><span>✦</span></div>
-  <button class="date-badge" onclick="openModal()">
-    📅 <span id="date-display">Definir data da festa</span>
-  </button>
-</header>
-
-<!-- PROGRESS -->
-<div class="progress-section">
-  <div class="progress-card">
-    <p class="progress-title">✦ Progresso Geral da Festa</p>
-    <div class="progress-stats">
-      <div class="stat">
-        <div class="stat-num" id="stat-guests">0</div>
-        <div class="stat-label">Convidados</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-confirmed">0</div>
-        <div class="stat-label">Confirmados</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-tasks">0%</div>
-        <div class="stat-label">Tarefas OK</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-budget">R$ 0</div>
-        <div class="stat-label">Orçamento</div>
-      </div>
+  <header>
+    <h1>👑 15 Anos de <span>Eloisa</span></h1>
+    <p>Organizador da festa dos sonhos</p>
+    <div class="countdown-btn-container">
+      <button class="btn-date" id="btn-countdown" onclick="configurarData()">📅 Definir data da festa</button>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+  </header>
+
+  <div class="dashboard">
+    <div class="card-dash">
+      <p>👥 Convidados</p>
+      <h2 id="dash-guests">0</h2>
+    </div>
+    <div class="card-dash">
+      <p>✅ Confirmados</p>
+      <h2 id="dash-confirmed">0</h2>
+    </div>
+    <div class="card-dash">
+      <p>📋 Tarefas OK</p>
+      <h2 id="dash-tasks">0%</h2>
+    </div>
+    <div class="card-dash">
+      <p>💰 Orçamento</p>
+      <h2 id="dash-budget">R$ 0</h2>
     </div>
   </div>
-</div>
 
-<!-- MAIN GRID -->
-<div class="main-grid">
-
-  <!-- CONVIDADOS -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#e2ebf5;">👸</div>
-      <span class="card-title">Convidados</span>
-      <span class="card-count" id="count-guests">0</span>
-    </div>
-    <div class="card-body">
-      <ul class="guest-list" id="guest-list"></ul>
-      <div class="input-row" style="margin-top:1rem; flex-wrap:wrap; gap:0.5rem;">
-        <input class="inp" id="inp-guest" placeholder="Nome do convidado" style="min-width:130px;" onkeydown="if(event.key==='Enter') addGuest()">
-        <select class="inp-select" id="sel-guest-status">
-          <option value="aguardando">⏳ Aguardando</option>
-          <option value="confirmado">✅ Confirmado</option>
-          <option value="cancelado">❌ Cancelado</option>
+  <div class="main-grid">
+    <!-- PAINEL DE CONVIDADOS -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>👥 Convidados</h3>
+        <span class="badge" id="badge-guests">0</span>
+      </div>
+      <div class="input-group">
+        <input type="text" id="input-guest" placeholder="Nome do convidado...">
+        <select id="select-guest-status" class="status-select" style="padding: 10px;">
+          <option value="Aguardando">Aguardando</option>
+          <option value="Confirmado">Confirmado</option>
+          <option value="Cancelado">Cancelado</option>
         </select>
-        <button class="btn-add" onclick="addGuest()">+ Adicionar</button>
+        <button class="btn-add" onclick="addGuest()">+ Cadastrar</button>
       </div>
+      <ul class="list-items" id="list-guests"></ul>
     </div>
-  </div>
 
-  <!-- CARDÁPIO -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#f7ebd9;">🎂</div>
-      <span class="card-title">Cardápio & Comes e Bebes</span>
-      <span class="card-count" id="count-food">0</span>
-    </div>
-    <div class="card-body">
-      <ul class="check-list" id="food-list"></ul>
-      <div class="input-row" style="margin-top:1rem;">
-        <input class="inp" id="inp-food" placeholder="Ex: Bolo principal, salgados..." onkeydown="if(event.key==='Enter') addCheck('food')">
-        <button class="btn-add" onclick="addCheck('food')">+</button>
+    <!-- PAINEL DE CARDÁPIO -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>🍔 Cardápio & Comes</h3>
+        <span class="badge" id="badge-menu">0</span>
       </div>
-    </div>
-  </div>
-
-  <!-- DECORAÇÃO -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#e2ebf5;">🌸</div>
-      <span class="card-title">Decoração</span>
-      <span class="card-count" id="count-decor">0</span>
-    </div>
-    <div class="card-body">
-      <ul class="check-list" id="decor-list"></ul>
-      <div class="input-row" style="margin-top:1rem;">
-        <input class="inp" id="inp-decor" placeholder="Ex: Balões, arranjos, faixas..." onkeydown="if(event.key==='Enter') addCheck('decor')">
-        <button class="btn-add" onclick="addCheck('decor')">+</button>
+      <div class="input-group">
+        <input type="text" id="input-menu" placeholder="Ex: Bolo principal, salgadinho...">
+        <button class="btn-add" onclick="addMenuItem()">+</button>
       </div>
+      <ul class="list-items" id="list-menu"></ul>
     </div>
-  </div>
 
-  <!-- MÚSICA & ENTRETENIMENTO -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#fafcff;">🎵</div>
-      <span class="card-title">Música & Entretenimento</span>
-      <span class="card-count" id="count-music">0</span>
-    </div>
-    <div class="card-body">
-      <ul class="check-list" id="music-list"></ul>
-      <div class="input-row" style="margin-top:1rem;">
-        <input class="inp" id="inp-music" placeholder="Ex: DJ, playlist, valsa..." onkeydown="if(event.key==='Enter') addCheck('music')">
-        <button class="btn-add" onclick="addCheck('music')">+</button>
+    <!-- PAINEL DE DECORAÇÃO -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>🌸 Decoração</h3>
+        <span class="badge" id="badge-decor">0</span>
       </div>
-    </div>
-  </div>
-
-  <!-- VESTIDO & LOOKS -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#f7ebd9;">👗</div>
-      <span class="card-title">Vestido & Looks</span>
-      <span class="card-count" id="count-looks">0</span>
-    </div>
-    <div class="card-body">
-      <ul class="check-list" id="looks-list"></ul>
-      <div class="input-row" style="margin-top:1rem;">
-        <input class="inp" id="inp-looks" placeholder="Ex: Vestido, maquiagem, sapato..." onkeydown="if(event.key==='Enter') addCheck('looks')">
-        <button class="btn-add" onclick="addCheck('looks')">+</button>
+      <div class="input-group">
+        <input type="text" id="input-decor" placeholder="Ex: Balões, arranjo, luzes...">
+        <button class="btn-add" onclick="addDecorItem()">+</button>
       </div>
+      <ul class="list-items" id="list-decor"></ul>
     </div>
   </div>
 
-  <!-- FORNECEDORES -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:#e2ebf5;">📋</div>
-      <span class="card-title">Fornecedores & Orçamento</span>
-      <span class="card-count" id="count-vendors">0</span>
-    </div>
-    <div class="card-body">
-      <ul class="budget-list" id="vendors-list"></ul>
-      <div class="input-row" style="margin-top:1rem;">
-        <input class="inp" id="inp-vendors-name" placeholder="Ex: Buffet, DJ, Salão..." style="min-width:110px;">
-        <input class="inp-money" id="inp-vendors-price" type="number" placeholder="R$">
-        <button class="btn-add" onclick="addBudgetVendor()">+</button>
-      </div>
-    </div>
-  </div>
+  <script>
+    // CONFIGURAÇÃO DO SUPABASE CORRIGIDA
+    const SUPABASE_URL = "https://tspjdgzrjaqooyrnudcr.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1krT";
 
-  <!-- NOTAS E ANOTAÇÕES GERAIS -->
-  <div class="card card-full">
-    <div class="card-header">
-      <div class="card-icon" style="background:#f7ebd9;">✍️</div>
-      <span class="card-title">Anotações Importantes</span>
-    </div>
-    <div class="card-body">
-      <textarea class="inp" id="notes-area" rows="5" placeholder="Digite aqui qualquer detalhe extra, telefones, ideias de brincadeiras..." oninput="saveNotes()"></textarea>
-    </div>
-  </div>
-
-</div>
-
-<!-- MODAL DATA -->
-<div class="modal-overlay" id="modal-date">
-  <div class="modal">
-    <h2>📅 Definir Data Especial</h2>
-    <label for="inp-date">Escolha a data da festa:</label>
-    <input type="date" class="inp" id="inp-date">
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="btn-save" onclick="saveDate()">Salvar Data</button>
-    </div>
-  </div>
-</div>
-
-<!-- AVISO DE SALVO -->
-<div class="save-notice" id="save-notice">✨ Sincronizado com a nuvem!</div>
-
-<!-- JAVASCRIPT DE PERSISTÊNCIA, CÁLCULOS E SINCRONIZAÇÃO EM NUVEM -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // CONFIGURAÇÃO DO SUPABASE
-  const SUPABASE_URL = "https://tspjdgzrjaqooyrnudcr.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1";
-
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  let AppData = {
-    rawDate: "",
-    date: "",
-    guests: [],
-    food: [],
-    decor: [],
-    music: [],
-    looks: [],
-    vendors: [],
-    notes: ""
-  };
-
-  // Sincroniza dados locais e busca convidados da nuvem
-  window.onload = async function() {
-    const local = localStorage.getItem('eloisa_15_anos_data');
-    if (local) {
-      AppData = JSON.parse(local);
-    }
-    renderAll();
-    await fetchGuestsFromSupabase();
-  };
-
-  function triggerSaveNotice() {
-    const notice = document.getElementById('save-notice');
-    if (notice) {
-      notice.classList.add('show');
-      setTimeout(() => notice.classList.remove('show'), 1500);
-    }
-  }
-
-  function saveToLocalStorage() {
-    localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
-    triggerSaveNotice();
-    updateProgress();
-  }
-
-  // Busca os convidados salvos no banco de dados
-  async function fetchGuestsFromSupabase() {
-    try {
-      const { data, error } = await supabase
-        .from('convidados')
-        .select('nome, status');
-      
-      if (error) throw error;
-      
-      if (data && data.length > 0) {
-        AppData.guests = data;
-        renderGuests();
-        updateProgress();
-      }
-    } catch (err) {
-      console.error("Erro ao carregar dados do Supabase:", err.message);
-    }
-  }
-
-  // DATA MODAL & CONTADOR DE DIAS
-  function openModal() { document.getElementById('modal-date').classList.add('open'); }
-  function closeModal() { document.getElementById('modal-date').classList.remove('open'); }
-  
-  function saveDate() {
-    const rawValue = document.getElementById('inp-date').value;
-    if(rawValue) {
-      const parts = rawValue.split('-');
-      AppData.rawDate = rawValue;
-      AppData.date = `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-    closeModal();
-    renderDate();
-    saveToLocalStorage();
-  }
-
-  function renderDate() {
-    const display = document.getElementById('date-display');
-    if (display) display.innerText = AppData.date || "Definir data da festa";
-    
-    const countdownArea = document.getElementById('countdown-area');
-    const daysNumber = document.getElementById('days-number');
-    
-    if (AppData.rawDate && countdownArea && daysNumber) {
-      const targetDate = new Date(AppData.rawDate + "T00:00:00");
-      const today = new Date();
-      today.setHours(0,0,0,0);
-      
-      const timeDiff = targetDate.getTime() - today.getTime();
-      const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      
-      if (daysDiff > 0) {
-        daysNumber.innerText = daysDiff;
-        countdownArea.style.display = "block";
-      } else if (daysDiff === 0) {
-        countdownArea.innerHTML = "✨ <b>É hoje! O grande dia chegou!</b> ✨";
-        countdownArea.style.display = "block";
-      } else {
-        countdownArea.style.display = "none";
-      }
-    }
-  }
-
-  // ADICIONAR CONVIDADO (Interface + Banco de Dados)
-  async function addGuest() {
-    const inp = document.getElementById('inp-guest');
-    const sel = document.getElementById('sel-guest-status');
-    if(!inp || !inp.value.trim()) return;
-
-    const newGuest = {
-      nome: inp.value.trim(),
-      status: sel.value
+    // Estrutura de dados local
+    let AppData = {
+      partyDate: "",
+      guests: [],
+      menu: [],
+      decor: []
     };
 
-    AppData.guests.push(newGuest);
-    renderGuests();
-    saveToLocalStorage();
-    inp.value = "";
-
-    try {
-      const { error } = await supabase
-        .from('convidados')
-        .insert([{ nome: newGuest.nome, status: newGuest.status }]);
-      if (error) throw error;
-    } catch (err) {
-      console.error("Erro ao salvar no Supabase:", err.message);
-    }
-  }
-
-  // REMOVER CONVIDADO (Interface + Banco de Dados)
-  async function removeGuest(index) {
-    const guestToRemove = AppData.guests[index];
-    AppData.guests.splice(index, 1);
-    renderGuests();
-    saveToLocalStorage();
-
-    try {
-      const { error } = await supabase
-        .from('convidados')
-        .delete()
-        .eq('nome', guestToRemove.nome);
-      if (error) throw error;
-    } catch (err) {
-      console.error("Erro ao remover do Supabase:", err.message);
-    }
-  }
-
-  function renderGuests() {
-    const list = document.getElementById('guest-list');
-    const count = document.getElementById('count-guests');
-    if (!list) return;
-    list.innerHTML = "";
-    
-    if(AppData.guests.length === 0) {
-      list.innerHTML = `<li class="empty-msg">Nenhum convidado adicionado</li>`;
-      if(count) count.innerText = "0";
-      return;
+    // BANCO DE DADOS - Buscar dados da Nuvem
+    async function fetchGuestsFromSupabase() {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/convidados?select=*`, {
+          method: "GET",
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+            "Content-Type": "application/json"
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            AppData.guests = data;
+            saveLocal();
+            renderAll();
+          }
+        }
+      } catch (error) {
+        console.error("Erro ao buscar convidados:", error);
+      }
     }
 
-    AppData.guests.forEach((g, i) => {
-      list.innerHTML += `
-        <li class="guest-item">
-          <span class="guest-status status-${g.status}"></span>
-          <span class="guest-name">${g.nome}</span>
-          <span class="guest-badge badge-${g.status}">${g.status.toUpperCase()}</span>
-          <button class="guest-remove" onclick="removeGuest(${i})">🗑️</button>
-        </li>
-      `;
-    });
-    if(count) count.innerText = AppData.guests.length;
-  }
-
-  // COMPONENTES DE CHECKLIST
-  function addCheck(type) {
-    const inp = document.getElementById(`inp-${type}`);
-    if(!inp || !inp.value.trim()) return;
-
-    AppData[type].push({ text: inp.value.trim(), done: false });
-    renderCheckList(type);
-    saveToLocalStorage();
-    inp.value = "";
-  }
-
-  function toggleCheck(type, index) {
-    AppData[type][index].done = !AppData[type][index].done;
-    renderCheckList(type);
-    saveToLocalStorage();
-  }
-
-  function removeCheck(type, index) {
-    AppData[type].splice(index, 1);
-    renderCheckList(type);
-    saveToLocalStorage();
-  }
-
-  function renderCheckList(type) {
-    const list = document.getElementById(`${type}-list`);
-    const count = document.getElementById(`count-${type}`);
-    if (!list) return;
-    list.innerHTML = "";
-
-    if(AppData[type].length === 0) {
-      list.innerHTML = `<li class="empty-msg">Nenhum item adicionado</li>`;
-      if(count) count.innerText = "0";
-      return;
+    // BANCO DE DADOS - Salvar novo convidado
+    async function saveGuestToSupabase(nome, status) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/convidados`, {
+          method: "POST",
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify({ nome: nome, status: status })
+        });
+        // Atualiza a lista local logo em seguida
+        fetchGuestsFromSupabase();
+      } catch (error) {
+        console.error("Erro ao salvar convidado na nuvem:", error);
+      }
     }
 
-    AppData[type].forEach((item, i) => {
-      list.innerHTML += `
-        <li class="check-item">
-          <input type="checkbox" ${item.done ? 'checked' : ''} onclick="toggleCheck('${type}', ${i})">
-          <span class="check-label ${item.done ? 'done' : ''}">${item.text}</span>
-          <button class="check-remove" onclick="removeCheck('${type}', ${i})">🗑️</button>
-        </li>
-      `;
-    });
-    if(count) count.innerText = AppData[type].length;
-  }
-
-  // COMPONENTES DE ORÇAMENTO
-  function addBudgetVendor() {
-    const nameInp = document.getElementById('inp-vendors-name');
-    const priceInp = document.getElementById('inp-vendors-price');
-    if(!nameInp || !nameInp.value.trim()) return;
-
-    const price = parseFloat(priceInp.value) || 0;
-    AppData.vendors.push({ name: nameInp.value.trim(), price: price });
-    
-    renderVendors();
-    saveToLocalStorage();
-    nameInp.value = "";
-    priceInp.value = "";
-  }
-
-  function removeVendor(index) {
-    AppData.vendors.splice(index, 1);
-    renderVendors();
-    saveToLocalStorage();
-  }
-
-  function renderVendors() {
-    const list = document.getElementById('vendors-list');
-    const count = document.getElementById('count-vendors');
-    if (!list) return;
-    list.innerHTML = "";
-
-    if(AppData.vendors.length === 0) {
-      list.innerHTML = `<li class="empty-msg">Nenhum fornecedor orçado</li>`;
-      if(count) count.innerText = "0";
-      return;
+    // BANCO DE DADOS - Atualizar status do convidado
+    async function updateGuestStatusInSupabase(nome, novoStatus) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/convidados?nome=eq.${encodeURIComponent(nome)}`, {
+          method: "PATCH",
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ status: novoStatus })
+        });
+      } catch (error) {
+        console.error("Erro ao atualizar status na nuvem:", error);
+      }
     }
 
-    AppData.vendors.forEach((v, i) => {
-      list.innerHTML += `
-        <li class="budget-item">
-          <span class="budget-name">${v.name}</span>
-          <span class="budget-value">R$ ${v.price.toFixed(2)}</span>
-          <button class="budget-remove" onclick="removeVendor(${i})">🗑️</button>
-        </li>
-      `;
-    });
-    if(count) count.innerText = AppData.vendors.length;
-  }
+    // BANCO DE DADOS - Deletar convidado
+    async function deleteGuestFromSupabase(nome) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/convidados?nome=eq.${encodeURIComponent(nome)}`, {
+          method: "DELETE",
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+      } catch (error) {
+        console.error("Erro ao deletar na nuvem:", error);
+      }
+    }
 
-  // ANOTAÇÕES
-  function saveNotes() {
-    const area = document.getElementById('notes-area');
-    if(area) {
-      AppData.notes = area.value;
+    // Salvamento Local (Cache de segurança)
+    function saveLocal() {
       localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
     }
-  }
 
-  // ATUALIZAÇÃO DO PROGRESSO GERAL
-  function updateProgress() {
-    const statGuests = document.getElementById('stat-guests');
-    const statConfirmed = document.getElementById('stat-confirmed');
-    const statTasks = document.getElementById('stat-tasks');
-    const statBudget = document.getElementById('stat-budget');
-    const progressBar = document.getElementById('progress-bar');
+    // Inicialização segura
+    window.onload = async function() {
+      try {
+        const local = localStorage.getItem('eloisa_15_anos_data');
+        if (local) {
+          AppData = JSON.parse(local);
+        }
+        renderAll();
+        // Carrega do banco sem travar a interface
+        await fetchGuestsFromSupabase();
+        startCountdown();
+      } catch (e) {
+        console.log("Modo local ativo:", e);
+        renderAll();
+      }
+    };
 
-    const totalGuests = AppData.guests.length;
-    const confirmedGuests = AppData.guests.filter(g => g.status === 'confirmado').length;
-    if(statGuests) statGuests.innerText = totalGuests;
-    if(statConfirmed) statConfirmed.innerText = confirmedGuests;
-
-    const totalBudget = AppData.vendors.reduce((sum, v) => sum + v.price, 0);
-    if(statBudget) statBudget.innerText = `R$ ${totalBudget.toFixed(0)}`;
-
-    const allChecks = [...AppData.food, ...AppData.decor, ...AppData.music, ...AppData.looks];
-    const totalChecks = allChecks.length;
-    const doneChecks = allChecks.filter(c => c.done).length;
-    
-    let pct = 0;
-    if(totalChecks > 0) {
-      pct = Math.round((doneChecks / totalChecks) * 100);
+    // Ações: Data / Countdown
+    function configurarData() {
+      const dataDigitada = prompt("Digite a data da festa (Formato: AAAA-MM-DD):", AppData.partyDate || "2026-12-31");
+      if (dataDigitada) {
+        AppData.partyDate = dataDigitada;
+        saveLocal();
+        startCountdown();
+      }
     }
-    if(statTasks) statTasks.innerText = `${pct}%`;
-    if(progressBar) progressBar.style.width = `${pct}%`;
-  }
 
-  function renderAll() {
-    renderDate();
-    renderGuests();
-    renderCheckList('food');
-    renderCheckList('decor');
-    renderCheckList('music');
-    renderCheckList('looks');
-    renderVendors();
-    const area = document.getElementById('notes-area');
-    if(area) area.value = AppData.notes || "";
-    updateProgress();
-  }
-</script>
+    function startCountdown() {
+      const btn = document.getElementById("btn-countdown");
+      if (!AppData.partyDate) return;
 
+      function updateClock() {
+        const t = Date.parse(AppData.partyDate) - Date.parse(new Date());
+        if (t <= 0) {
+          btn.innerText = "🎉 É HOJE!!! 🎉";
+          return;
+        }
+        const dias = Math.floor(t / (1000 * 60 * 60 * 24));
+        btn.innerText = `📅 Faltam ${dias} dias para a festa!`;
+      }
+      updateClock();
+      setInterval(updateClock, 60000);
+    }
+
+    // Ações: Adicionar Itens
+    function addGuest() {
+      const input = document.getElementById("input-guest");
+      const selectStatus = document.getElementById("select-guest-status");
+      const name = input.value.trim();
+      const status = selectStatus.value;
+
+      if (!name) return;
+
+      // Adiciona na memória local primeiro para resposta rápida
+      if (!AppData.guests.some(g => g.nome === name)) {
+        AppData.guests.push({ nome: name, status: status });
+        saveLocal();
+        renderAll();
+        // Dispara para a nuvem
+        saveGuestToSupabase(name, status);
+      }
+      input.value = "";
+    }
+
+    function changeGuestStatus(index, newStatus) {
+      const guest = AppData.guests[index];
+      guest.status = newStatus;
+      saveLocal();
+      updateCounters();
+      updateGuestStatusInSupabase(guest.nome, newStatus);
+    }
+
+    function removeGuest(index) {
+      const guest = AppData.guests[index];
+      AppData.guests.splice(index, 1);
+      saveLocal();
+      renderAll();
+      deleteGuestFromSupabase(guest.nome);
+    }
+
+    // Funções genéricas para Cardápio e Decoração
+    function addMenuItem() {
+      const input = document.getElementById("input-menu");
+      const val = input.value.trim();
+      if (!val) return;
+      AppData.menu.push(val);
+      saveLocal();
+      renderAll();
+      input.value = "";
+    }
+
+    function removeMenu(index) {
+      AppData.menu.splice(index, 1);
+      saveLocal();
+      renderAll();
+    }
+
+    function addDecorItem() {
+      const input = document.getElementById("input-decor");
+      const val = input.value.trim();
+      if (!val) return;
+      AppData.decor.push(val);
+      saveLocal();
+      renderAll();
+      input.value = "";
+    }
+
+    function removeDecor(index) {
+      AppData.decor.splice(index, 1);
+      saveLocal();
+      renderAll();
+    }
+
+    // Renderização e Atualizações da Tela
+    function updateCounters() {
+      const totalGuests = AppData.guests.length;
+      const confirmed = AppData.guests.filter(g => g.status === "Confirmado").length;
+
+      document.getElementById("dash-guests").innerText = totalGuests;
+      document.getElementById("dash-confirmed").innerText = confirmed;
+      document.getElementById("badge-guests").innerText = totalGuests;
+      document.getElementById("badge-menu").innerText = AppData.menu.length;
+      document.getElementById("badge-decor").innerText = AppData.decor.length;
+    }
+
+    function renderAll() {
+      updateCounters();
+
+      // Lista de Convidados
+      const listG = document.getElementById("list-guests");
+      listG.innerHTML = "";
+      AppData.guests.forEach((g, i) => {
+        const li = document.createElement("li");
+        li.className = "item-row";
+        li.innerHTML = `
+          <div class="item-info">
+            <span class="item-title">${g.nome}</span>
+          </div>
+          <div class="item-actions">
+            <select class="status-select" onchange="changeGuestStatus(${i}, this.value)">
+              <option value="Aguardando" ${g.status === 'Aguardando' ? 'selected' : ''}>Aguardando</option>
+              <option value="Confirmado" ${g.status === 'Confirmado' ? 'selected' : ''}>Confirmado</option>
+              <option value="Cancelado" ${g.status === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
+            </select>
+            <button class="btn-del" onclick="removeGuest(${i})">&times;</button>
+          </div>
+        `;
+        listG.appendChild(li);
+      });
+
+      // Lista de Cardápio
+      const listM = document.getElementById("list-menu");
+      listM.innerHTML = "";
+      AppData.menu.forEach((item, i) => {
+        const li = document.createElement("li");
+        li.className = "item-row";
+        li.innerHTML = `
+          <span class="item-title">${item}</span>
+          <button class="btn-del" onclick="removeMenu(${i})">&times;</button>
+        `;
+        listM.appendChild(li);
+      });
+
+      // Lista de Decoração
+      const listD = document.getElementById("list-decor");
+      listD.innerHTML = "";
+      AppData.decor.forEach((item, i) => {
+        const li = document.createElement("li");
+        li.className = "item-row";
+        li.innerHTML = `
+          <span class="item-title">${item}</span>
+          <button class="btn-del" onclick="removeDecor(${i})">&times;</button>
+        `;
+        listD.appendChild(li);
+      });
+    }
+  </script>
 </body>
 </html>
