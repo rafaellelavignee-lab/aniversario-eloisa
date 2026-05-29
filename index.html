@@ -161,6 +161,25 @@
   .save-notice { position:fixed; bottom:1.5rem; right:1.5rem; background:var(--navy-mid); border:1px solid var(--navy-border); color:var(--gold-light); padding:.7rem 1.3rem; border-radius:100px; font-size:.82rem; font-family:'DM Sans',sans-serif; opacity:0; transform:translateY(10px); transition:all .3s; z-index:50; pointer-events:none; }
   .save-notice.show { opacity:1; transform:translateY(0); }
   .empty-msg { text-align:center; color:var(--muted); font-size:.85rem; font-style:italic; padding:.5rem; }
+
+  /* COUNTDOWN */
+  .countdown-section { max-width:900px; margin:0 auto 2rem; padding:0 1.5rem; }
+  .countdown-card {
+    background:linear-gradient(135deg, rgba(201,169,110,0.15), rgba(77,145,232,0.1));
+    border:1px solid var(--gold); border-radius:20px; padding:1.5rem 2rem; text-align:center;
+  }
+  .countdown-title { font-family:'Playfair Display',serif; font-size:.9rem; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; margin-bottom:1rem; }
+  .countdown-boxes { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; }
+  .countdown-box { text-align:center; }
+  .countdown-num { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; color:var(--gold-light); line-height:1; }
+  .countdown-label { font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-top:.3rem; }
+  .countdown-sep { font-size:2rem; color:var(--gold); align-self:center; opacity:.5; }
+  .countdown-done { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--gold-light); font-style:italic; }
+  .countdown-no-date { font-size:.88rem; color:var(--muted); font-style:italic; }
+  /* QUICK OPTIONS */
+  .quick-options { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.8rem; }
+  .quick-btn { padding:.3rem .8rem; background:rgba(77,145,232,.1); border:1px solid var(--navy-border); border-radius:100px; font-size:.78rem; color:var(--text); cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; }
+  .quick-btn:hover { background:var(--accent); color:white; border-color:var(--accent); }
   ::-webkit-scrollbar { width:6px; }
   ::-webkit-scrollbar-track { background:var(--navy); }
   ::-webkit-scrollbar-thumb { background:var(--navy-border); border-radius:3px; }
@@ -222,6 +241,16 @@
       <span class="card-count" id="count-food">0</span>
     </div>
     <div class="card-body">
+      <div class="quick-options">
+        <button class="quick-btn" onclick="quickAdd('food','Bolo principal')">🎂 Bolo principal</button>
+        <button class="quick-btn" onclick="quickAdd('food','Salgados')">🥐 Salgados</button>
+        <button class="quick-btn" onclick="quickAdd('food','Docinhos')">🍬 Docinhos</button>
+        <button class="quick-btn" onclick="quickAdd('food','Refrigerante')">🥤 Refrigerante</button>
+        <button class="quick-btn" onclick="quickAdd('food','Suco natural')">🍹 Suco natural</button>
+        <button class="quick-btn" onclick="quickAdd('food','Água')">💧 Água</button>
+        <button class="quick-btn" onclick="quickAdd('food','Bem casados')">💍 Bem casados</button>
+        <button class="quick-btn" onclick="quickAdd('food','Mesa de frios')">🧀 Mesa de frios</button>
+      </div>
       <ul class="check-list" id="food-list"><li class="empty-msg">Lista vazia...</li></ul>
       <div class="input-row">
         <input class="inp" id="inp-food" placeholder="Ex: Bolo principal, salgados..." onkeydown="if(event.key==='Enter')addCheck('food')">
@@ -238,6 +267,16 @@
       <span class="card-count" id="count-decor">0</span>
     </div>
     <div class="card-body">
+      <div class="quick-options">
+        <button class="quick-btn" onclick="quickAdd('decor','Balões')">🎈 Balões</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Arranjos florais')">💐 Arranjos florais</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Faixas e banners')">🎀 Faixas e banners</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Mesa do bolo')">🎂 Mesa do bolo</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Iluminação')">✨ Iluminação</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Painel de fotos')">📸 Painel de fotos</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Toalhas e tecidos')">🌹 Toalhas e tecidos</button>
+        <button class="quick-btn" onclick="quickAdd('decor','Velas decorativas')">🕯️ Velas decorativas</button>
+      </div>
       <ul class="check-list" id="decor-list"><li class="empty-msg">Lista vazia...</li></ul>
       <div class="input-row">
         <input class="inp" id="inp-decor" placeholder="Ex: Balões, arranjos, faixas..." onkeydown="if(event.key==='Enter')addCheck('decor')">
@@ -254,6 +293,14 @@
       <span class="card-count" id="count-music">0</span>
     </div>
     <div class="card-body">
+      <div class="quick-options">
+        <button class="quick-btn" onclick="quickAdd('music','DJ')">🎧 DJ</button>
+        <button class="quick-btn" onclick="quickAdd('music','Banda ao vivo')">🎸 Banda ao vivo</button>
+        <button class="quick-btn" onclick="quickAdd('music','Playlist personalizada')">🎶 Playlist personalizada</button>
+        <button class="quick-btn" onclick="quickAdd('music','Valsa')">💃 Valsa</button>
+        <button class="quick-btn" onclick="quickAdd('music','Karaokê')">🎤 Karaokê</button>
+        <button class="quick-btn" onclick="quickAdd('music','Coreografia surpresa')">🌟 Coreografia surpresa</button>
+      </div>
       <ul class="check-list" id="music-list"><li class="empty-msg">Lista vazia...</li></ul>
       <div class="input-row">
         <input class="inp" id="inp-music" placeholder="Ex: DJ, playlist, valsa..." onkeydown="if(event.key==='Enter')addCheck('music')">
@@ -414,6 +461,7 @@ async function loadData() {
   }
   renderAll();
   setInterval(fetchFromSupabase, 5000);
+  setInterval(updateCountdown, 1000);
 }
 
 async function syncToSupabase() {
@@ -459,6 +507,7 @@ function showSave(msg) {
 // ====== RENDER ALL ======
 function renderAll() {
   updateDateBadge();
+  updateCountdown();
   renderGuests();
   ['food','decor','music','looks','vendors','tasks'].forEach(renderCheck);
   renderBudget();
@@ -483,6 +532,7 @@ function saveEvent() {
   state.time      = document.getElementById('inp-time').value;
   state.theme     = document.getElementById('inp-theme').value;
   updateDateBadge();
+  updateCountdown();
   closeModal();
   syncToSupabase();
 }
@@ -533,6 +583,49 @@ function renderGuests() {
       </li>`).join('');
   }
   document.getElementById('count-guests').textContent = state.guests ? state.guests.length : 0;
+}
+
+
+// ====== COUNTDOWN ======
+function updateCountdown() {
+  const el = document.getElementById('countdown-content');
+  if (!state.eventDate) {
+    el.innerHTML = '<p class="countdown-no-date">Defina a data da festa para ver a contagem regressiva 🌸</p>';
+    return;
+  }
+  const now  = new Date();
+  const fest = new Date(state.eventDate + 'T12:00:00');
+  const diff = fest - now;
+  if (diff <= 0) {
+    el.innerHTML = '<p class="countdown-done">🎉 A festa chegou! Parabéns, Eloisa! 🌸👑</p>';
+    return;
+  }
+  const totalDays = Math.floor(diff / (1000*60*60*24));
+  const months    = Math.floor(totalDays / 30);
+  const days      = totalDays % 30;
+  const hours     = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const minutes   = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const seconds   = Math.floor((diff % (1000*60)) / 1000);
+  el.innerHTML = \`
+    <div class="countdown-boxes">
+      <div class="countdown-box"><div class="countdown-num">\${String(months).padStart(2,'0')}</div><div class="countdown-label">Meses</div></div>
+      <div class="countdown-sep">·</div>
+      <div class="countdown-box"><div class="countdown-num">\${String(days).padStart(2,'0')}</div><div class="countdown-label">Dias</div></div>
+      <div class="countdown-sep">·</div>
+      <div class="countdown-box"><div class="countdown-num">\${String(hours).padStart(2,'0')}</div><div class="countdown-label">Horas</div></div>
+      <div class="countdown-sep">·</div>
+      <div class="countdown-box"><div class="countdown-num">\${String(minutes).padStart(2,'0')}</div><div class="countdown-label">Minutos</div></div>
+      <div class="countdown-sep">·</div>
+      <div class="countdown-box"><div class="countdown-num">\${String(seconds).padStart(2,'0')}</div><div class="countdown-label">Segundos</div></div>
+    </div>\`;
+}
+
+// ====== QUICK ADD ======
+function quickAdd(type, text) {
+  if (!state[type]) state[type] = [];
+  if (state[type].find(i => i.text === text)) return;
+  state[type].push({ id:Date.now(), text, done:false });
+  renderCheck(type); syncToSupabase();
 }
 
 // ====== CHECKLISTS ======
