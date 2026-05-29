@@ -197,6 +197,16 @@
   </button>
 </header>
 
+<!-- CONTAGEM REGRESSIVA -->
+<div class="countdown-section">
+  <div class="countdown-card">
+    <div class="countdown-title">✨ Contagem Regressiva para a Festa ✨</div>
+    <div id="countdown-content">
+      <p class="countdown-no-date">Defina a data da festa para ver a contagem regressiva 🌸</p>
+    </div>
+  </div>
+</div>
+
 <div class="progress-section">
   <div class="progress-card">
     <p class="progress-title">✦ Progresso Geral da Festa</p>
@@ -589,6 +599,7 @@ function renderGuests() {
 // ====== COUNTDOWN ======
 function updateCountdown() {
   const el = document.getElementById('countdown-content');
+  if (!el) return;
   if (!state.eventDate) {
     el.innerHTML = '<p class="countdown-no-date">Defina a data da festa para ver a contagem regressiva 🌸</p>';
     return;
