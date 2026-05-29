@@ -594,7 +594,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <span class="crown">👑</span>
   <h1>15 Anos de <em>Eloisa</em></h1>
@@ -605,7 +604,6 @@
   </button>
 </header>
 
-<!-- PROGRESS -->
 <div class="progress-section">
   <div class="progress-card">
     <p class="progress-title">✦ Progresso Geral da Festa</p>
@@ -633,10 +631,8 @@
   </div>
 </div>
 
-<!-- MAIN GRID -->
 <div class="main-grid">
 
-  <!-- CONVIDADOS -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#fde8ed;">👸</div>
@@ -657,7 +653,6 @@
     </div>
   </div>
 
-  <!-- CARDÁPIO -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#fff3e0;">🎂</div>
@@ -673,7 +668,6 @@
     </div>
   </div>
 
-  <!-- DECORAÇÃO -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#f3e5f5;">🌸</div>
@@ -689,7 +683,6 @@
     </div>
   </div>
 
-  <!-- MÚSICA & ENTRETENIMENTO -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#e8f5e9;">🎵</div>
@@ -705,7 +698,6 @@
     </div>
   </div>
 
-  <!-- VESTIDO & LOOKS -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#fce4ec;">👗</div>
@@ -721,7 +713,6 @@
     </div>
   </div>
 
-  <!-- FORNECEDORES -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#e3f2fd;">📋</div>
@@ -737,7 +728,6 @@
     </div>
   </div>
 
-  <!-- ORÇAMENTO -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#fff9e0;">💰</div>
@@ -757,7 +747,6 @@
     </div>
   </div>
 
-  <!-- TAREFAS GERAIS -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:#e8eaf6;">✅</div>
@@ -773,7 +762,6 @@
     </div>
   </div>
 
-  <!-- FOTOS & INSPIRAÇÕES -->
   <div class="card card-full">
     <div class="card-header">
       <div class="card-icon" style="background:#fce4ec;">📸</div>
@@ -790,7 +778,6 @@
     </div>
   </div>
 
-  <!-- ANOTAÇÕES -->
   <div class="card card-full">
     <div class="card-header">
       <div class="card-icon" style="background:#f3e5f5;">📝</div>
@@ -803,7 +790,6 @@
 
 </div>
 
-<!-- MODAL DATA -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <h2>🎀 Data & Local da Festa</h2>
@@ -822,10 +808,8 @@
   </div>
 </div>
 
-<!-- SAVE NOTICE -->
-<div class="save-notice" id="save-notice">✓ Salvo no Supabase</div>
+<div class="save-notice" id="save-notice">✓ Sincronizado</div>
 
-<!-- INTEGRAÇÃO DO SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ====== CONFIG SUPABASE ======
@@ -842,27 +826,50 @@ let state = {
   photos: []
 };
 
-// Carrega o estado global direto do banco de dados unificado
+// Evita atualizar a tela se você estiver digitando ativamente nas Anotações
+let isTypingNotes = false;
+
+// Coleta as atualizações do banco de dados periodicamente para sincronizar todo mundo
+async function fetchFromSupabase() {
+  try {
+    const { data, error } = await _supabase.from('festas').select('*').eq('id', 1).single();
+    if (!error && data && data.dados_festa) {
+      const incomingState = data.dados_festa;
+      
+      // Só atualiza o estado local se houver alguma mudança real vinda de fora
+      if (JSON.stringify(state) !== JSON.stringify(incomingState)) {
+        
+        // Se você estiver editando o bloco de texto, preserva o seu rascunho temporariamente
+        if (isTypingNotes) {
+          incomingState.notes = state.notes;
+        }
+
+        state = incomingState;
+        renderAll();
+      }
+    }
+  } catch(e) {}
+}
+
+// Carrega o estado global na primeira vez que abre a página
 async function loadData() {
   try {
     const { data, error } = await _supabase.from('festas').select('*').eq('id', 1).single();
     if (!error && data && data.dados_festa) {
       state = data.dados_festa;
     } else if (error && error.code === 'PGRST116') {
-      // Se não houver a linha com id=1, tenta carregar do localStorage ou cria padrão
       const saved = localStorage.getItem('eloisa15anos');
       if (saved) state = { ...state, ...JSON.parse(saved) };
       await syncToSupabase();
     }
   } catch(e) {
-    // Fallback de segurança local se a rede falhar
     const saved = localStorage.getItem('eloisa15anos');
     if (saved) state = { ...state, ...JSON.parse(saved) };
   }
   renderAll();
 }
 
-// Sincroniza o objeto completo com a nuvem mantendo os dados seguros
+// Envia as modificações locais para a nuvem
 async function syncToSupabase() {
   try {
     localStorage.setItem('eloisa15anos', JSON.stringify(state));
@@ -914,6 +921,7 @@ function addGuest() {
   const name = document.getElementById('inp-guest').value.trim();
   if (!name) return;
   const status = document.getElementById('sel-guest-status').value;
+  if (!state.guests) state.guests = [];
   state.guests.push({ id: Date.now(), name, status });
   document.getElementById('inp-guest').value = '';
   renderGuests();
@@ -931,9 +939,9 @@ function changeGuestStatus(id, status) {
 function renderGuests() {
   const ul = document.getElementById('guest-list');
   const statusMap = {
-    confirmado: { color: 'status-confirmado', label: 'Confirmado' },
-    aguardando: { color: 'status-aguardando', label: 'Aguardando' },
-    cancelado: { color: 'status-cancelado', label: 'Cancelado' }
+    confirmado: { color: 'status-confirmado' },
+    aguardando: { color: 'status-aguardando' },
+    cancelado: { color: 'status-cancelado' }
   };
   if (!state.guests || !state.guests.length) {
     ul.innerHTML = '<li class="empty-msg">Nenhum convidado ainda...</li>';
@@ -960,6 +968,7 @@ function addCheck(type) {
   const inp = document.getElementById('inp-'+type);
   const text = inp.value.trim();
   if (!text) return;
+  if (!state[type]) state[type] = [];
   state[type].push({ id: Date.now(), text, done: false });
   inp.value = '';
   renderCheck(type);
@@ -995,6 +1004,7 @@ function addBudget() {
   const name = document.getElementById('inp-budget-name').value.trim();
   const val = parseFloat(document.getElementById('inp-budget-val').value) || 0;
   if (!name) return;
+  if (!state.budget) state.budget = [];
   state.budget.push({ id: Date.now(), name, value: val });
   document.getElementById('inp-budget-name').value = '';
   document.getElementById('inp-budget-val').value = '';
@@ -1059,8 +1069,15 @@ function renderPhotos() {
 
 // ====== NOTES ======
 function saveNotesState() {
+  isTypingNotes = true;
   state.notes = document.getElementById('notes-area').value;
-  syncToSupabase();
+  
+  // Envia as anotações e redefine o gatilho após parar de digitar
+  clearTimeout(window._notesTimer);
+  window._notesTimer = setTimeout(() => {
+    syncToSupabase();
+    isTypingNotes = false;
+  }, 1000);
 }
 
 // ====== STATS ======
@@ -1092,7 +1109,9 @@ function renderAll() {
   ['food','decor','music','looks','vendors','tasks'].forEach(renderCheck);
   renderBudget();
   renderPhotos();
-  document.getElementById('notes-area').value = state.notes || '';
+  if (!isTypingNotes) {
+    document.getElementById('notes-area').value = state.notes || '';
+  }
   updateStats();
 }
 
@@ -1104,7 +1123,10 @@ function esc(s) {
 window.onload = function() {
   loadData();
   
-  // População inicial caso venha totalmente zerado do banco
+  // Verifica mudanças no banco a cada 3 segundos de forma contínua
+  setInterval(fetchFromSupabase, 3000);
+  
+  // Amostras padrões se o banco de dados iniciar vazio
   setTimeout(() => {
     if ((!state.guests || !state.guests.length) && (!state.food || !state.food.length)) {
       state.food = [
