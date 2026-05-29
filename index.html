@@ -450,17 +450,18 @@ async function loadData() {
     const { data, error } = await _supabase.from('festas').select('*').eq('id',1).single();
     if (!error && data && data.dados_festa) {
       state = data.dados_festa;
+      localStorage.setItem('eloisa15anos', JSON.stringify(state));
     } else {
       const saved = localStorage.getItem('eloisa15anos');
-      if (saved) state = { ...state, ...JSON.parse(saved) };
-      await syncToSupabase();
+      if (saved) { state = { ...state, ...JSON.parse(saved) }; await syncToSupabase(); }
     }
   } catch(e) {
     const saved = localStorage.getItem('eloisa15anos');
     if (saved) state = { ...state, ...JSON.parse(saved) };
+    showSave('⚠️ Sem conexão com servidor');
   }
   renderAll();
-  setInterval(fetchFromSupabase, 5000);
+  setInterval(fetchFromSupabase, 3000);
   setInterval(updateCountdown, 1000);
 }
 
