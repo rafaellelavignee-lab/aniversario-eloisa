@@ -600,10 +600,17 @@
 </div>
 
 <!-- AVISO DE SALVO -->
-<div class="save-notice" id="save-notice">✨ Atualizado automaticamente!</div>
+<div class="save-notice" id="save-notice">✨ Sincronizado com a nuvem!</div>
 
-<!-- JAVASCRIPT DE PERSISTÊNCIA E CÁLCULOS -->
+<!-- JAVASCRIPT DE PERSISTÊNCIA, CÁLCULOS E SINCRONIZAÇÃO EM NUVEM -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  // CONFIGURAÇÃO DO SUPABASE
+  const SUPABASE_URL = "https://tspjdgzrjaqooyrnudcr.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1";
+
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   let AppData = {
     rawDate: "",
     date: "",
@@ -616,24 +623,47 @@
     notes: ""
   };
 
-  window.onload = function() {
+  // Sincroniza dados locais e busca convidados da nuvem
+  window.onload = async function() {
     const local = localStorage.getItem('eloisa_15_anos_data');
     if (local) {
       AppData = JSON.parse(local);
     }
     renderAll();
+    await fetchGuestsFromSupabase();
   };
 
   function triggerSaveNotice() {
     const notice = document.getElementById('save-notice');
-    notice.classList.add('show');
-    setTimeout(() => notice.classList.remove('show'), 1500);
+    if (notice) {
+      notice.classList.add('show');
+      setTimeout(() => notice.classList.remove('show'), 1500);
+    }
   }
 
   function saveToLocalStorage() {
     localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
     triggerSaveNotice();
     updateProgress();
+  }
+
+  // Busca os convidados salvos no banco de dados
+  async function fetchGuestsFromSupabase() {
+    try {
+      const { data, error } = await supabase
+        .from('convidados')
+        .select('nome, status');
+      
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        AppData.guests = data;
+        renderGuests();
+        updateProgress();
+      }
+    } catch (err) {
+      console.error("Erro ao carregar dados do Supabase:", err.message);
+    }
   }
 
   // DATA MODAL & CONTADOR DE DIAS
@@ -643,8 +673,8 @@
   function saveDate() {
     const rawValue = document.getElementById('inp-date').value;
     if(rawValue) {
-      AppData.rawDate = rawValue;
       const parts = rawValue.split('-');
+      AppData.rawDate = rawValue;
       AppData.date = `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
     closeModal();
@@ -653,16 +683,16 @@
   }
 
   function renderDate() {
-    document.getElementById('date-display').innerText = AppData.date || "Definir data da festa";
+    const display = document.getElementById('date-display');
+    if (display) display.innerText = AppData.date || "Definir data da festa";
     
-    // Logica do Contador de Dias
     const countdownArea = document.getElementById('countdown-area');
     const daysNumber = document.getElementById('days-number');
     
-    if (AppData.rawDate) {
+    if (AppData.rawDate && countdownArea && daysNumber) {
       const targetDate = new Date(AppData.rawDate + "T00:00:00");
       const today = new Date();
-      today.setHours(0,0,0,0); // Zera as horas de hoje para o calculo exato em dias
+      today.setHours(0,0,0,0);
       
       const timeDiff = targetDate.getTime() - today.getTime();
       const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -671,190 +701,210 @@
         daysNumber.innerText = daysDiff;
         countdownArea.style.display = "block";
       } else if (daysDiff === 0) {
-        countdownArea.innerHTML = "🎉 É <span>HOJE</span> o grande dia! 🎉";
+        countdownArea.innerHTML = "✨ <b>É hoje! O grande dia chegou!</b> ✨";
         countdownArea.style.display = "block";
       } else {
-        countdownArea.innerText = "A festa linda já aconteceu! ✨";
-        countdownArea.style.display = "block";
+        countdownArea.style.display = "none";
       }
-    } else {
-      countdownArea.style.display = "none";
     }
   }
 
-  // CONVIDADOS
-  function addGuest() {
-    const nameInp = document.getElementById('inp-guest');
-    const statusSel = document.getElementById('sel-guest-status');
-    if (!nameInp.value.trim()) return;
+  // ADICIONAR CONVIDADO (Interface + Banco de Dados)
+  async function addGuest() {
+    const inp = document.getElementById('inp-guest');
+    const sel = document.getElementById('sel-guest-status');
+    if(!inp || !inp.value.trim()) return;
 
-    AppData.guests.push({
-      id: Date.now(),
-      name: nameInp.value.trim(),
-      status: statusSel.value
-    });
+    const newGuest = {
+      nome: inp.value.trim(),
+      status: sel.value
+    };
 
-    nameInp.value = "";
+    AppData.guests.push(newGuest);
     renderGuests();
     saveToLocalStorage();
+    inp.value = "";
+
+    try {
+      const { error } = await supabase
+        .from('convidados')
+        .insert([{ nome: newGuest.nome, status: newGuest.status }]);
+      if (error) throw error;
+    } catch (err) {
+      console.error("Erro ao salvar no Supabase:", err.message);
+    }
   }
 
-  function removeGuest(id) {
-    AppData.guests = AppData.guests.filter(g => g.id !== id);
+  // REMOVER CONVIDADO (Interface + Banco de Dados)
+  async function removeGuest(index) {
+    const guestToRemove = AppData.guests[index];
+    AppData.guests.splice(index, 1);
     renderGuests();
     saveToLocalStorage();
+
+    try {
+      const { error } = await supabase
+        .from('convidados')
+        .delete()
+        .eq('nome', guestToRemove.nome);
+      if (error) throw error;
+    } catch (err) {
+      console.error("Erro ao remover do Supabase:", err.message);
+    }
   }
 
   function renderGuests() {
     const list = document.getElementById('guest-list');
+    const count = document.getElementById('count-guests');
+    if (!list) return;
     list.innerHTML = "";
-    document.getElementById('count-guests').innerText = AppData.guests.length;
     
     if(AppData.guests.length === 0) {
       list.innerHTML = `<li class="empty-msg">Nenhum convidado adicionado</li>`;
+      if(count) count.innerText = "0";
       return;
     }
 
-    AppData.guests.forEach(g => {
-      const li = document.createElement('li');
-      li.className = "guest-item";
-      li.innerHTML = `
-        <span class="guest-status status-${g.status}"></span>
-        <span class="guest-name">${g.name}</span>
-        <span class="guest-badge badge-${g.status}">${g.status.toUpperCase()}</span>
-        <button class="guest-remove" onclick="removeGuest(${g.id})">❌</button>
+    AppData.guests.forEach((g, i) => {
+      list.innerHTML += `
+        <li class="guest-item">
+          <span class="guest-status status-${g.status}"></span>
+          <span class="guest-name">${g.nome}</span>
+          <span class="guest-badge badge-${g.status}">${g.status.toUpperCase()}</span>
+          <button class="guest-remove" onclick="removeGuest(${i})">🗑️</button>
+        </li>
       `;
-      list.appendChild(li);
     });
+    if(count) count.innerText = AppData.guests.length;
   }
 
-  // CHECKLISTS (Cardápio, Decoração, Música, Looks)
+  // COMPONENTES DE CHECKLIST
   function addCheck(type) {
     const inp = document.getElementById(`inp-${type}`);
-    if (!inp.value.trim()) return;
+    if(!inp || !inp.value.trim()) return;
 
-    AppData[type].push({
-      id: Date.now(),
-      text: inp.value.trim(),
-      done: false
-    });
-
+    AppData[type].push({ text: inp.value.trim(), done: false });
+    renderCheckList(type);
+    saveToLocalStorage();
     inp.value = "";
+  }
+
+  function toggleCheck(type, index) {
+    AppData[type][index].done = !AppData[type][index].done;
     renderCheckList(type);
     saveToLocalStorage();
   }
 
-  function toggleCheck(type, id) {
-    const item = AppData[type].find(i => i.id === id);
-    if (item) item.done = !item.done;
-    renderCheckList(type);
-    saveToLocalStorage();
-  }
-
-  function removeCheck(type, id) {
-    AppData[type] = AppData[type].filter(i => i.id !== id);
+  function removeCheck(type, index) {
+    AppData[type].splice(index, 1);
     renderCheckList(type);
     saveToLocalStorage();
   }
 
   function renderCheckList(type) {
     const list = document.getElementById(`${type}-list`);
+    const count = document.getElementById(`count-${type}`);
+    if (!list) return;
     list.innerHTML = "";
-    document.getElementById(`count-${type}`).innerText = AppData[type].length;
 
     if(AppData[type].length === 0) {
       list.innerHTML = `<li class="empty-msg">Nenhum item adicionado</li>`;
+      if(count) count.innerText = "0";
       return;
     }
 
-    AppData[type].forEach(item => {
-      const li = document.createElement('li');
-      li.className = "check-item";
-      li.innerHTML = `
-        <input type="checkbox" ${item.done ? 'checked' : ''} onclick="toggleCheck('${type}', ${item.id})">
-        <span class="check-label ${item.done ? 'done' : ''}" onclick="toggleCheck('${type}', ${item.id})">${item.text}</span>
-        <button class="check-remove" onclick="removeCheck('${type}', ${item.id})">❌</button>
+    AppData[type].forEach((item, i) => {
+      list.innerHTML += `
+        <li class="check-item">
+          <input type="checkbox" ${item.done ? 'checked' : ''} onclick="toggleCheck('${type}', ${i})">
+          <span class="check-label ${item.done ? 'done' : ''}">${item.text}</span>
+          <button class="check-remove" onclick="removeCheck('${type}', ${i})">🗑️</button>
+        </li>
       `;
-      list.appendChild(li);
     });
+    if(count) count.innerText = AppData[type].length;
   }
 
-  // ORÇAMENTO / FORNECEDORES
+  // COMPONENTES DE ORÇAMENTO
   function addBudgetVendor() {
     const nameInp = document.getElementById('inp-vendors-name');
     const priceInp = document.getElementById('inp-vendors-price');
-    if (!nameInp.value.trim()) return;
+    if(!nameInp || !nameInp.value.trim()) return;
 
-    AppData.vendors.push({
-      id: Date.now(),
-      name: nameInp.value.trim(),
-      price: parseFloat(priceInp.value) || 0
-    });
-
-    nameInp.value = "";
-    priceInp.value = "";
+    const price = parseFloat(priceInp.value) || 0;
+    AppData.vendors.push({ name: nameInp.value.trim(), price: price });
+    
     renderVendors();
     saveToLocalStorage();
+    nameInp.value = "";
+    priceInp.value = "";
   }
 
-  function removeVendor(id) {
-    AppData.vendors = AppData.vendors.filter(v => v.id !== id);
+  function removeVendor(index) {
+    AppData.vendors.splice(index, 1);
     renderVendors();
     saveToLocalStorage();
   }
 
   function renderVendors() {
     const list = document.getElementById('vendors-list');
+    const count = document.getElementById('count-vendors');
+    if (!list) return;
     list.innerHTML = "";
-    document.getElementById('count-vendors').innerText = AppData.vendors.length;
 
     if(AppData.vendors.length === 0) {
-      list.innerHTML = `<li class="empty-msg">Nenhum fornecedor adicionado</li>`;
+      list.innerHTML = `<li class="empty-msg">Nenhum fornecedor orçado</li>`;
+      if(count) count.innerText = "0";
       return;
     }
 
-    AppData.vendors.forEach(v => {
-      const li = document.createElement('li');
-      li.className = "budget-item";
-      li.innerHTML = `
-        <span class="budget-name">💼 ${v.name}</span>
-        <span class="budget-value">R$ ${v.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-        <button class="budget-remove" onclick="removeVendor(${v.id})">❌</button>
+    AppData.vendors.forEach((v, i) => {
+      list.innerHTML += `
+        <li class="budget-item">
+          <span class="budget-name">${v.name}</span>
+          <span class="budget-value">R$ ${v.price.toFixed(2)}</span>
+          <button class="budget-remove" onclick="removeVendor(${i})">🗑️</button>
+        </li>
       `;
-      list.appendChild(li);
     });
+    if(count) count.innerText = AppData.vendors.length;
   }
 
   // ANOTAÇÕES
   function saveNotes() {
-    AppData.notes = document.getElementById('notes-area').value;
-    localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
-    updateProgress();
+    const area = document.getElementById('notes-area');
+    if(area) {
+      AppData.notes = area.value;
+      localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
+    }
   }
 
-  // PROGRESSO GERAL
+  // ATUALIZAÇÃO DO PROGRESSO GERAL
   function updateProgress() {
+    const statGuests = document.getElementById('stat-guests');
+    const statConfirmed = document.getElementById('stat-confirmed');
+    const statTasks = document.getElementById('stat-tasks');
+    const statBudget = document.getElementById('stat-budget');
+    const progressBar = document.getElementById('progress-bar');
+
     const totalGuests = AppData.guests.length;
     const confirmedGuests = AppData.guests.filter(g => g.status === 'confirmado').length;
-    
-    document.getElementById('stat-guests').innerText = totalGuests;
-    document.getElementById('stat-confirmed').innerText = confirmedGuests;
+    if(statGuests) statGuests.innerText = totalGuests;
+    if(statConfirmed) statConfirmed.innerText = confirmedGuests;
 
     const totalBudget = AppData.vendors.reduce((sum, v) => sum + v.price, 0);
-    document.getElementById('stat-budget').innerText = `R$ ${Math.round(totalBudget).toLocaleString('pt-BR')}`;
+    if(statBudget) statBudget.innerText = `R$ ${totalBudget.toFixed(0)}`;
 
-    const lists = ['food', 'decor', 'music', 'looks'];
-    let totalTasks = 0;
-    let completedTasks = 0;
-
-    lists.forEach(type => {
-      totalTasks += AppData[type].length;
-      completedTasks += AppData[type].filter(i => i.done).length;
-    });
-
-    const percent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-    document.getElementById('stat-tasks').innerText = `${percent}%`;
-    document.getElementById('progress-bar').style.width = `${percent}%`;
+    const allChecks = [...AppData.food, ...AppData.decor, ...AppData.music, ...AppData.looks];
+    const totalChecks = allChecks.length;
+    const doneChecks = allChecks.filter(c => c.done).length;
+    
+    let pct = 0;
+    if(totalChecks > 0) {
+      pct = Math.round((doneChecks / totalChecks) * 100);
+    }
+    if(statTasks) statTasks.innerText = `${pct}%`;
+    if(progressBar) progressBar.style.width = `${pct}%`;
   }
 
   function renderAll() {
@@ -865,11 +915,11 @@
     renderCheckList('music');
     renderCheckList('looks');
     renderVendors();
-    document.getElementById('notes-area').value = AppData.notes || "";
+    const area = document.getElementById('notes-area');
+    if(area) area.value = AppData.notes || "";
     updateProgress();
   }
 </script>
 
 </body>
 </html>
-
