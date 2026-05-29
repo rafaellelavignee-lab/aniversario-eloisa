@@ -43,7 +43,7 @@
   /* HEADER */
   header { text-align:center; padding:3rem 2rem 2rem; }
   .crown { font-size:2.5rem; display:block; animation:float 3s ease-in-out infinite; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes float { 0%{transform:translateY(0) rotate(-10deg)} 25%{transform:translateY(-10px) rotate(10deg)} 50%{transform:translateY(-5px) rotate(-10deg)} 75%{transform:translateY(-12px) rotate(8deg)} 100%{transform:translateY(0) rotate(-10deg)} }
   header h1 {
     font-family:'Playfair Display',serif;
     font-size:clamp(2.2rem,6vw,4rem);
@@ -188,7 +188,7 @@
 <body>
 
 <header>
-  <span class="crown">👑</span>
+  <span class="crown">🦋</span>
   <h1>15 Anos de <em>Eloisa</em></h1>
   <p class="subtitle">Organizador da festa dos sonhos</p>
   <div class="divider"><span>✦</span></div>
@@ -605,31 +605,35 @@ function updateCountdown() {
     return;
   }
   const now  = new Date();
-  const fest = new Date(state.eventDate + 'T12:00:00');
-  const diff = fest - now;
+  const parts = state.eventDate.split('-');
+  const fest  = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]), 12, 0, 0);
+  const diff  = fest - now;
   if (diff <= 0) {
-    el.innerHTML = '<p class="countdown-done">🎉 A festa chegou! Parabéns, Eloisa! 🌸👑</p>';
+    el.innerHTML = '<p class="countdown-done">🎉 A festa chegou! Parabéns, Eloisa! 🦋🌸</p>';
     return;
   }
-  const totalDays = Math.floor(diff / (1000*60*60*24));
+  const totalSec  = Math.floor(diff / 1000);
+  const seconds   = totalSec % 60;
+  const totalMin  = Math.floor(totalSec / 60);
+  const minutes   = totalMin % 60;
+  const totalHour = Math.floor(totalMin / 60);
+  const hours     = totalHour % 24;
+  const totalDays = Math.floor(totalHour / 24);
   const months    = Math.floor(totalDays / 30);
   const days      = totalDays % 30;
-  const hours     = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-  const minutes   = Math.floor((diff % (1000*60*60)) / (1000*60));
-  const seconds   = Math.floor((diff % (1000*60)) / 1000);
   function pad(n) { return String(n).padStart(2,'0'); }
-  el.innerHTML = `
-    <div class="countdown-boxes">
-      <div class="countdown-box"><div class="countdown-num">${pad(months)}</div><div class="countdown-label">Meses</div></div>
-      <div class="countdown-sep">·</div>
-      <div class="countdown-box"><div class="countdown-num">${pad(days)}</div><div class="countdown-label">Dias</div></div>
-      <div class="countdown-sep">·</div>
-      <div class="countdown-box"><div class="countdown-num">${pad(hours)}</div><div class="countdown-label">Horas</div></div>
-      <div class="countdown-sep">·</div>
-      <div class="countdown-box"><div class="countdown-num">${pad(minutes)}</div><div class="countdown-label">Minutos</div></div>
-      <div class="countdown-sep">·</div>
-      <div class="countdown-box"><div class="countdown-num">${pad(seconds)}</div><div class="countdown-label">Segundos</div></div>
-    </div>`;
+  el.innerHTML =
+    '<div class="countdown-boxes">' +
+      '<div class="countdown-box"><div class="countdown-num">' + pad(months)  + '</div><div class="countdown-label">Meses</div></div>' +
+      '<div class="countdown-sep">·</div>' +
+      '<div class="countdown-box"><div class="countdown-num">' + pad(days)    + '</div><div class="countdown-label">Dias</div></div>' +
+      '<div class="countdown-sep">·</div>' +
+      '<div class="countdown-box"><div class="countdown-num">' + pad(hours)   + '</div><div class="countdown-label">Horas</div></div>' +
+      '<div class="countdown-sep">·</div>' +
+      '<div class="countdown-box"><div class="countdown-num">' + pad(minutes) + '</div><div class="countdown-label">Minutos</div></div>' +
+      '<div class="countdown-sep">·</div>' +
+      '<div class="countdown-box"><div class="countdown-num">' + pad(seconds) + '</div><div class="countdown-label">Segundos</div></div>' +
+    '</div>';
 }
 
 // ====== QUICK ADD ======
