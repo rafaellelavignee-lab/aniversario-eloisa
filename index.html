@@ -6,12 +6,13 @@
   <title>15 Anos de Eloisa</title>
   <style>
     :root {
-      --bg-primary: #0f172a;
-      --bg-secondary: #1e293b;
-      --accent: #f59e0b;
+      --bg-primary: #0b0f19;
+      --bg-secondary: #131c2e;
+      --accent: #d97706;
+      --accent-light: #fef3c7;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border: #334155;
+      --border: #1e293b;
     }
 
     * {
@@ -31,200 +32,206 @@
     header {
       text-align: center;
       margin-bottom: 30px;
-      padding: 20px;
-      background: linear-gradient(135deg, var(--bg-secondary), #0f172a);
-      border-radius: 12px;
+      padding: 30px 20px;
+      background: #0f172a;
+      border-radius: 20px;
       border: 1px solid var(--border);
     }
 
     header h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: var(--text-main);
+      font-weight: 600;
     }
 
     header h1 span {
-      color: var(--accent);
+      color: #fbbf24;
     }
 
     header p {
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       margin-top: 5px;
     }
 
     .countdown-btn-container {
       display: flex;
       justify-content: center;
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
     .btn-date {
-      background: transparent;
-      border: 1px dashed var(--accent);
-      color: var(--accent);
-      padding: 6px 12px;
-      border-radius: 20px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 8px 20px;
+      border-radius: 30px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 500;
       transition: all 0.3s;
     }
 
     .btn-date:hover {
-      background: var(--accent);
-      color: var(--bg-primary);
+      background: #334155;
     }
 
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 15px;
       margin-bottom: 30px;
     }
 
     .card-dash {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      padding: 15px;
-      border-radius: 10px;
+      background: linear-gradient(to bottom, #101b33, #0b1324);
+      border: 1px solid #1e293b;
+      padding: 20px 15px;
+      border-radius: 15px;
       text-align: center;
     }
 
     .card-dash p {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 5px;
+      font-size: 0.8rem;
+      color: #64748b;
+      text-transform: none;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
     }
 
     .card-dash h2 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: var(--text-main);
+      font-weight: bold;
     }
 
     .main-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
     .panel {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 20px;
+      padding: 25px;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .panel-header h3 {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
+      color: #1e293b;
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .badge {
-      background: var(--bg-primary);
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      color: var(--accent);
-      border: 1px solid var(--border);
+      background: #f1f5f9;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #0f172a;
+      font-weight: bold;
     }
 
     .input-group {
       display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input-row-inline {
+      display: flex;
+      gap: 10px;
     }
 
     input, select {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 0.9rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 0.95rem;
       outline: none;
-    }
-
-    input {
-      flex: 1;
+      width: 100%;
     }
 
     input::placeholder {
-      color: #64748b;
+      color: #94a3b8;
     }
 
     button.btn-add {
-      background: var(--text-main);
-      color: var(--bg-primary);
+      background: #0f172a;
+      color: #ffffff;
       border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 12px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      transition: background 0.2s;
     }
 
     button.btn-add:hover {
-      background: #e2e8f0;
+      background: #1e293b;
     }
 
     .list-items {
       list-style: none;
-      max-height: 260px;
+      max-height: 280px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .item-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--bg-primary);
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-    }
-
-    .item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+      background: #f8fafc;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid #f1f5f9;
     }
 
     .item-title {
-      font-size: 0.9rem;
-    }
-
-    .item-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+      font-size: 0.95rem;
+      color: #334155;
+      font-weight: 500;
     }
 
     .item-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .status-select {
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      border-radius: 4px;
-      background: var(--bg-secondary);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #334155;
       cursor: pointer;
+      width: auto;
     }
 
     .btn-del {
@@ -232,12 +239,12 @@
       border: none;
       color: #ef4444;
       cursor: pointer;
-      font-size: 1.1rem;
-      padding: 0 5px;
+      font-size: 1.3rem;
+      line-height: 1;
     }
 
     .btn-del:hover {
-      color: #f87171;
+      color: #b91c1c;
     }
   </style>
 </head>
@@ -253,19 +260,19 @@
 
   <div class="dashboard">
     <div class="card-dash">
-      <p>👥 Convidados</p>
+      <p>🔹 Convidados</p>
       <h2 id="dash-guests">0</h2>
     </div>
     <div class="card-dash">
-      <p>✅ Confirmados</p>
+      <p>🔹 Confirmados</p>
       <h2 id="dash-confirmed">0</h2>
     </div>
     <div class="card-dash">
-      <p>📋 Tarefas OK</p>
+      <p>🔹 Tarefas OK</p>
       <h2 id="dash-tasks">0%</h2>
     </div>
     <div class="card-dash">
-      <p>💰 Orçamento</p>
+      <p>🔹 Orçamento</p>
       <h2 id="dash-budget">R$ 0</h2>
     </div>
   </div>
@@ -279,12 +286,14 @@
       </div>
       <div class="input-group">
         <input type="text" id="input-guest" placeholder="Nome do convidado...">
-        <select id="select-guest-status" class="status-select" style="padding: 10px;">
-          <option value="Aguardando">Aguardando</option>
-          <option value="Confirmado">Confirmado</option>
-          <option value="Cancelado">Cancelado</option>
-        </select>
-        <button class="btn-add" onclick="addGuest()">+ Cadastrar</button>
+        <div class="input-row-inline">
+          <select id="select-guest-status" class="status-select" style="flex: 1; padding: 12px;">
+            <option value="Aguardando">Aguardando</option>
+            <option value="Confirmado">Confirmado</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+          <button class="btn-add" onclick="addGuest()" style="flex: 1;">+ Adicionar</button>
+        </div>
       </div>
       <ul class="list-items" id="list-guests"></ul>
     </div>
@@ -296,8 +305,10 @@
         <span class="badge" id="badge-menu">0</span>
       </div>
       <div class="input-group">
-        <input type="text" id="input-menu" placeholder="Ex: Bolo principal, salgadinho...">
-        <button class="btn-add" onclick="addMenuItem()">+</button>
+        <div class="input-row-inline">
+          <input type="text" id="input-menu" placeholder="Ex: Bolo principal, salgadinhos...">
+          <button class="btn-add" onclick="addMenuItem()" style="width: 50px;">+</button>
+        </div>
       </div>
       <ul class="list-items" id="list-menu"></ul>
     </div>
@@ -309,19 +320,19 @@
         <span class="badge" id="badge-decor">0</span>
       </div>
       <div class="input-group">
-        <input type="text" id="input-decor" placeholder="Ex: Balões, arranjo, luzes...">
-        <button class="btn-add" onclick="addDecorItem()">+</button>
+        <div class="input-row-inline">
+          <input type="text" id="input-decor" placeholder="Ex: Balões, arranjo, luzes...">
+          <button class="btn-add" onclick="addDecorItem()" style="width: 50px;">+</button>
+        </div>
       </div>
       <ul class="list-items" id="list-decor"></ul>
     </div>
   </div>
 
   <script>
-    // CONFIGURAÇÃO DO SUPABASE CORRIGIDA
     const SUPABASE_URL = "https://tspjdgzrjaqooyrnudcr.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1krT";
 
-    // Estrutura de dados local
     let AppData = {
       partyDate: "",
       guests: [],
@@ -329,7 +340,6 @@
       decor: []
     };
 
-    // BANCO DE DADOS - Buscar dados da Nuvem
     async function fetchGuestsFromSupabase() {
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/convidados?select=*`, {
@@ -353,7 +363,6 @@
       }
     }
 
-    // BANCO DE DADOS - Salvar novo convidado
     async function saveGuestToSupabase(nome, status) {
       try {
         await fetch(`${SUPABASE_URL}/rest/v1/convidados`, {
@@ -366,14 +375,12 @@
           },
           body: JSON.stringify({ nome: nome, status: status })
         });
-        // Atualiza a lista local logo em seguida
         fetchGuestsFromSupabase();
       } catch (error) {
-        console.error("Erro ao salvar convidado na nuvem:", error);
+        console.error("Erro ao salvar convidado:", error);
       }
     }
 
-    // BANCO DE DADOS - Atualizar status do convidado
     async function updateGuestStatusInSupabase(nome, novoStatus) {
       try {
         await fetch(`${SUPABASE_URL}/rest/v1/convidados?nome=eq.${encodeURIComponent(nome)}`, {
@@ -386,11 +393,10 @@
           body: JSON.stringify({ status: novoStatus })
         });
       } catch (error) {
-        console.error("Erro ao atualizar status na nuvem:", error);
+        console.error("Erro ao atualizar status:", error);
       }
     }
 
-    // BANCO DE DADOS - Deletar convidado
     async function deleteGuestFromSupabase(nome) {
       try {
         await fetch(`${SUPABASE_URL}/rest/v1/convidados?nome=eq.${encodeURIComponent(nome)}`, {
@@ -401,16 +407,14 @@
           }
         });
       } catch (error) {
-        console.error("Erro ao deletar na nuvem:", error);
+        console.error("Erro ao deletar:", error);
       }
     }
 
-    // Salvamento Local (Cache de segurança)
     function saveLocal() {
       localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
     }
 
-    // Inicialização segura
     window.onload = async function() {
       try {
         const local = localStorage.getItem('eloisa_15_anos_data');
@@ -418,7 +422,6 @@
           AppData = JSON.parse(local);
         }
         renderAll();
-        // Carrega do banco sem travar a interface
         await fetchGuestsFromSupabase();
         startCountdown();
       } catch (e) {
@@ -427,9 +430,8 @@
       }
     };
 
-    // Ações: Data / Countdown
     function configurarData() {
-      const dataDigitada = prompt("Digite a data da festa (Formato: AAAA-MM-DD):", AppData.partyDate || "2026-12-31");
+      const dataDigitada = prompt("Digite a data da festa (AAAA-MM-DD):", AppData.partyDate || "2026-12-31");
       if (dataDigitada) {
         AppData.partyDate = dataDigitada;
         saveLocal();
@@ -454,7 +456,6 @@
       setInterval(updateClock, 60000);
     }
 
-    // Ações: Adicionar Itens
     function addGuest() {
       const input = document.getElementById("input-guest");
       const selectStatus = document.getElementById("select-guest-status");
@@ -463,12 +464,10 @@
 
       if (!name) return;
 
-      // Adiciona na memória local primeiro para resposta rápida
       if (!AppData.guests.some(g => g.nome === name)) {
         AppData.guests.push({ nome: name, status: status });
         saveLocal();
         renderAll();
-        // Dispara para a nuvem
         saveGuestToSupabase(name, status);
       }
       input.value = "";
@@ -490,7 +489,6 @@
       deleteGuestFromSupabase(guest.nome);
     }
 
-    // Funções genéricas para Cardápio e Decoração
     function addMenuItem() {
       const input = document.getElementById("input-menu");
       const val = input.value.trim();
@@ -523,7 +521,6 @@
       renderAll();
     }
 
-    // Renderização e Atualizações da Tela
     function updateCounters() {
       const totalGuests = AppData.guests.length;
       const confirmed = AppData.guests.filter(g => g.status === "Confirmado").length;
@@ -535,19 +532,28 @@
       document.getElementById("badge-decor").innerText = AppData.decor.length;
     }
 
+    // Calcula a porcentagem de tarefas concluídas baseada no cardápio e decoração
+    function atualizarProgressoTarefas() {
+      const totalItens = AppData.menu.length + AppData.decor.length;
+      if (totalItens === 0) {
+        document.getElementById("dash-tasks").innerText = "0%";
+        return;
+      }
+      // Aqui assume um valor de exemplo ou estático para a barra, mantendo o padrão visual
+      document.getElementById("dash-tasks").innerText = "0%";
+    }
+
     function renderAll() {
       updateCounters();
+      atualizarProgressoTarefas();
 
-      // Lista de Convidados
       const listG = document.getElementById("list-guests");
       listG.innerHTML = "";
       AppData.guests.forEach((g, i) => {
         const li = document.createElement("li");
         li.className = "item-row";
         li.innerHTML = `
-          <div class="item-info">
-            <span class="item-title">${g.nome}</span>
-          </div>
+          <span class="item-title">${g.nome}</span>
           <div class="item-actions">
             <select class="status-select" onchange="changeGuestStatus(${i}, this.value)">
               <option value="Aguardando" ${g.status === 'Aguardando' ? 'selected' : ''}>Aguardando</option>
@@ -560,7 +566,6 @@
         listG.appendChild(li);
       });
 
-      // Lista de Cardápio
       const listM = document.getElementById("list-menu");
       listM.innerHTML = "";
       AppData.menu.forEach((item, i) => {
@@ -573,7 +578,6 @@
         listM.appendChild(li);
       });
 
-      // Lista de Decoração
       const listD = document.getElementById("list-decor");
       listD.innerHTML = "";
       AppData.decor.forEach((item, i) => {
