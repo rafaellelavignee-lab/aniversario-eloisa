@@ -384,7 +384,7 @@
 <script>
 // ====== CONFIG SUPABASE ======
 const SUPABASE_URL      = "https://tspjdgzrjaqooyrnudcr.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1krT";
+const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWH0JyIJa5eIHtTw_bdm-1krT";
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let state = {
@@ -396,19 +396,7 @@ let state = {
 let isTypingNotes = false;
 
 // ====== SYNC ======
-async function fetchFromSupabase() {
-  try {
-    const { data, error } = await _supabase.from('festas').select('*').eq('id',1).single();
-    if (!error && data && data.dados_festa) {
-      const incoming = data.dados_festa;
-      if (JSON.stringify(state) !== JSON.stringify(incoming)) {
-        if (isTypingNotes) incoming.notes = state.notes;
-        state = incoming;
-        renderAll();
-      }
-    }
-  } catch(e){}
-}
+
 
 async function loadData() {
   try {
@@ -431,17 +419,41 @@ async function loadData() {
 async function syncToSupabase() {
   try {
     localStorage.setItem('eloisa15anos', JSON.stringify(state));
-    await _supabase.from('festas').upsert([{ id:1, dados_festa:state }]);
-    showSave();
-  } catch(e) {}
+    const { error } = await _supabase.from('festas').upsert([{ id:1, dados_festa:state }]);
+    if (error) {
+      console.error('Supabase sync error:', error);
+      showSave('⚠️ Erro ao salvar: ' + error.message);
+    } else {
+      showSave('✓ Sincronizado');
+    }
+  } catch(e) {
+    console.error('Sync exception:', e);
+    showSave('⚠️ Sem conexão');
+  }
   updateStats();
 }
 
-function showSave() {
+async function fetchFromSupabase() {
+  try {
+    const { data, error } = await _supabase.from('festas').select('*').eq('id',1).single();
+    if (error) { console.error('Fetch error:', error); return; }
+    if (data && data.dados_festa) {
+      const incoming = data.dados_festa;
+      if (JSON.stringify(state) !== JSON.stringify(incoming)) {
+        if (isTypingNotes) incoming.notes = state.notes;
+        state = incoming;
+        renderAll();
+      }
+    }
+  } catch(e) { console.error('Fetch exception:', e); }
+}
+
+function showSave(msg) {
   const el = document.getElementById('save-notice');
+  el.textContent = msg || '✓ Sincronizado';
   el.classList.add('show');
   clearTimeout(window._saveTimer);
-  window._saveTimer = setTimeout(() => el.classList.remove('show'), 2000);
+  window._saveTimer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
 // ====== RENDER ALL ======
