@@ -1,595 +1,1146 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>15 Anos de Eloisa</title>
-  <style>
-    :root {
-      --bg-primary: #0b0f19;
-      --bg-secondary: #131c2e;
-      --accent: #d97706;
-      --accent-light: #fef3c7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #1e293b;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 15 Anos da Eloisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8a5b0;
+    --blush: #f5d0d8;
+    --gold: #c9a96e;
+    --gold-light: #f0deb4;
+    --cream: #fdf6f0;
+    --deep: #3d2535;
+    --text: #5a3a47;
+    --muted: #9a7a85;
+    --white: #ffffff;
+    --card-bg: rgba(255,255,255,0.85);
+  }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-main);
-      padding: 20px;
-      line-height: 1.5;
-    }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-      padding: 30px 20px;
-      background: #0f172a;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-    }
+  /* === BACKGROUND === */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, #f9e8ed 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 90%, #fde8d0 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 50% 50%, #fff5f8 0%, transparent 100%);
+    z-index: -1;
+  }
 
-    header h1 {
-      font-size: 2.2rem;
-      color: var(--text-main);
-      font-weight: 600;
-    }
+  /* === HEADER === */
+  header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    position: relative;
+  }
 
-    header h1 span {
-      color: #fbbf24;
-    }
+  .crown {
+    font-size: 2.5rem;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
 
-    header p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-top: 5px;
-    }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
 
-    .countdown-btn-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    color: var(--deep);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0.5rem 0 0.3rem;
+  }
 
-    .btn-date {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #f8fafc;
-      padding: 8px 20px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
+  header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
 
-    .btn-date:hover {
-      background: #334155;
-    }
+  header p.subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
 
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.5rem auto;
+    max-width: 300px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .divider::after { background: linear-gradient(90deg, var(--gold), transparent); }
+  .divider span { color: var(--gold); font-size: 1.1rem; }
 
-    .card-dash {
-      background: linear-gradient(to bottom, #101b33, #0b1324);
-      border: 1px solid #1e293b;
-      padding: 20px 15px;
-      border-radius: 15px;
-      text-align: center;
-    }
+  /* === DATE BADGE === */
+  .date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--deep);
+    color: var(--gold-light);
+    padding: 0.5rem 1.5rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .date-badge:hover { transform: scale(1.05); background: var(--gold); color: var(--deep); }
 
-    .card-dash p {
-      font-size: 0.8rem;
-      color: #64748b;
-      text-transform: none;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-    }
+  /* === PROGRESS === */
+  .progress-section {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+    padding: 0 1.5rem;
+  }
 
-    .card-dash h2 {
-      font-size: 1.8rem;
-      color: var(--text-main);
-      font-weight: bold;
-    }
+  .progress-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(201,169,110,0.2);
+    box-shadow: 0 4px 30px rgba(61,37,53,0.07);
+  }
 
-    .main-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
+  .progress-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
 
-    .panel {
-      background: #ffffff;
-      color: #0f172a;
-      border-radius: 20px;
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    }
+  .progress-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
 
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.2rem;
+  }
 
-    .panel-header h3 {
-      font-size: 1.15rem;
-      color: #1e293b;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+  .progress-bar-wrap {
+    background: var(--blush);
+    border-radius: 100px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    border-radius: 100px;
+    transition: width 0.8s ease;
+  }
 
-    .badge {
-      background: #f1f5f9;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: #0f172a;
-      font-weight: bold;
-    }
+  /* === MAIN GRID === */
+  .main-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
 
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+  /* === CARDS === */
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 1px solid rgba(201,169,110,0.15);
+    box-shadow: 0 4px 30px rgba(61,37,53,0.07);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(61,37,53,0.12); }
 
-    .input-row-inline {
-      display: flex;
-      gap: 10px;
-    }
+  .card-header {
+    padding: 1.2rem 1.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
 
-    input, select {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      color: #0f172a;
-      padding: 12px 15px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      outline: none;
-      width: 100%;
-    }
+  .card-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
 
-    input::placeholder {
-      color: #94a3b8;
-    }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--deep);
+  }
 
-    button.btn-add {
-      background: #0f172a;
-      color: #ffffff;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: background 0.2s;
-    }
+  .card-count {
+    margin-left: auto;
+    background: var(--blush);
+    color: var(--rose);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+  }
 
-    button.btn-add:hover {
-      background: #1e293b;
-    }
+  .card-body { padding: 1.2rem 1.5rem 1.5rem; }
 
-    .list-items {
-      list-style: none;
-      max-height: 280px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  /* === CONVIDADOS === */
+  .guest-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
 
-    .item-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
-      padding: 12px 15px;
-      border-radius: 12px;
-      border: 1px solid #f1f5f9;
-    }
+  .guest-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    background: rgba(245,208,216,0.3);
+    transition: background 0.2s;
+  }
+  .guest-item:hover { background: rgba(245,208,216,0.6); }
 
-    .item-title {
-      font-size: 0.95rem;
-      color: #334155;
-      font-weight: 500;
-    }
+  .guest-status {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .status-confirmado { background: #7bc67e; }
+  .status-aguardando { background: var(--gold); }
+  .status-cancelado { background: #e07c7c; }
 
-    .item-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+  .guest-name { flex: 1; font-size: 0.9rem; color: var(--text); }
 
-    .status-select {
-      padding: 6px 10px;
-      font-size: 0.8rem;
-      border-radius: 8px;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #334155;
-      cursor: pointer;
-      width: auto;
-    }
+  .guest-badge {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .badge-confirmado { background: #d4edda; color: #2e7d32; }
+  .badge-aguardando { background: var(--gold-light); color: #7a5c20; }
+  .badge-cancelado { background: #fde8e8; color: #c62828; }
 
-    .btn-del {
-      background: transparent;
-      border: none;
-      color: #ef4444;
-      cursor: pointer;
-      font-size: 1.3rem;
-      line-height: 1;
-    }
+  .guest-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 1rem; opacity: 0;
+    transition: opacity 0.2s; padding: 0 0.2rem;
+  }
+  .guest-item:hover .guest-remove { opacity: 1; }
 
-    .btn-del:hover {
-      color: #b91c1c;
-    }
-  </style>
+  /* === INPUT AREA === */
+  .input-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .inp {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: 1.5px solid rgba(201,169,110,0.3);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    background: white;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .inp:focus { border-color: var(--rose); }
+
+  .inp-select {
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid rgba(201,169,110,0.3);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    background: white;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .btn-add {
+    padding: 0.6rem 1rem;
+    background: var(--deep);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-add:hover { background: var(--gold); color: var(--deep); }
+
+  /* === CHECKLIST (comida, decoração, etc.) === */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 12px;
+    background: rgba(245,208,216,0.2);
+    transition: background 0.2s;
+  }
+  .check-item:hover { background: rgba(245,208,216,0.5); }
+
+  .check-item input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--rose);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .check-label {
+    flex: 1;
+    font-size: 0.88rem;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .check-label.done {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .check-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 1rem; opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .check-item:hover .check-remove { opacity: 1; }
+
+  /* === FOTOS === */
+  .photos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .photo-thumb {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    background: var(--blush);
+  }
+
+  .photo-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .photo-thumb:hover img { transform: scale(1.08); }
+
+  .photo-remove {
+    position: absolute; top: 4px; right: 4px;
+    background: rgba(255,255,255,0.9);
+    border: none; border-radius: 50%;
+    width: 22px; height: 22px;
+    cursor: pointer; font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+    color: var(--deep);
+  }
+  .photo-thumb:hover .photo-remove { opacity: 1; }
+
+  .photo-upload-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.3rem;
+    background: rgba(245,208,216,0.3);
+    border: 2px dashed rgba(201,169,110,0.4);
+    border-radius: 12px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+    width: 100%;
+  }
+  .photo-upload-btn:hover {
+    background: rgba(245,208,216,0.6);
+    border-color: var(--rose);
+    color: var(--rose);
+  }
+  .photo-upload-btn span { font-size: 1.5rem; }
+
+  /* === ORÇAMENTO === */
+  .budget-total {
+    text-align: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--deep), #6b3a52);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+  .budget-total-label { color: rgba(255,255,255,0.7); font-size: 0.8rem; letter-spacing: 0.08em; }
+  .budget-total-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  .budget-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .budget-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    background: rgba(245,208,216,0.2);
+    transition: background 0.2s;
+  }
+  .budget-item:hover { background: rgba(245,208,216,0.5); }
+
+  .budget-name { flex: 1; font-size: 0.88rem; }
+  .budget-value { font-weight: 600; color: var(--deep); font-size: 0.9rem; }
+
+  .budget-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 1rem; opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .budget-item:hover .budget-remove { opacity: 1; }
+
+  .inp-money {
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid rgba(201,169,110,0.3);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    background: white;
+    color: var(--text);
+    outline: none;
+    width: 90px;
+  }
+  .inp-money:focus { border-color: var(--rose); }
+
+  /* === NOTAS === */
+  .notes-area {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid rgba(201,169,110,0.3);
+    border-radius: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--text);
+    background: white;
+    outline: none;
+    resize: vertical;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .notes-area:focus { border-color: var(--rose); }
+
+  /* === MODAL DATA === */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(61,37,53,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(61,37,53,0.2);
+  }
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--deep);
+    margin-bottom: 1.2rem;
+  }
+  .modal label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .modal .inp { width: 100%; margin-bottom: 1rem; }
+  .modal-btns { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 0.5rem; }
+  .btn-cancel {
+    padding: 0.6rem 1.2rem;
+    border: 1.5px solid rgba(201,169,110,0.4);
+    border-radius: 12px;
+    background: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .btn-save {
+    padding: 0.6rem 1.4rem;
+    background: var(--deep);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  .btn-save:hover { background: var(--gold); color: var(--deep); }
+
+  /* FULL CARD for photos and notes */
+  .card-full { grid-column: 1 / -1; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 600px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .card-full { grid-column: 1; }
+    .photos-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* === SAVE NOTICE === */
+  .save-notice {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--deep);
+    color: var(--gold-light);
+    padding: 0.7rem 1.3rem;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-family: 'DM Sans', sans-serif;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .save-notice.show { opacity: 1; transform: translateY(0); }
+
+  .empty-msg {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-style: italic;
+    padding: 0.5rem;
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>👑 15 Anos de <span>Eloisa</span></h1>
-    <p>Organizador da festa dos sonhos</p>
-    <div class="countdown-btn-container">
-      <button class="btn-date" id="btn-countdown" onclick="configurarData()">📅 Definir data da festa</button>
-    </div>
-  </header>
+<!-- HEADER -->
+<header>
+  <span class="crown">👑</span>
+  <h1>15 Anos de <em>Eloisa</em></h1>
+  <p class="subtitle">Organizador da festa dos sonhos</p>
+  <div class="divider"><span>✦</span></div>
+  <button class="date-badge" onclick="openModal()">
+    📅 <span id="date-display">Definir data da festa</span>
+  </button>
+</header>
 
-  <div class="dashboard">
-    <div class="card-dash">
-      <p>🔹 Convidados</p>
-      <h2 id="dash-guests">0</h2>
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-card">
+    <p class="progress-title">✦ Progresso Geral da Festa</p>
+    <div class="progress-stats">
+      <div class="stat">
+        <div class="stat-num" id="stat-guests">0</div>
+        <div class="stat-label">Convidados</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-confirmed">0</div>
+        <div class="stat-label">Confirmados</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-tasks">0%</div>
+        <div class="stat-label">Tarefas OK</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-budget">R$ 0</div>
+        <div class="stat-label">Orçamento</div>
+      </div>
     </div>
-    <div class="card-dash">
-      <p>🔹 Confirmados</p>
-      <h2 id="dash-confirmed">0</h2>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
     </div>
-    <div class="card-dash">
-      <p>🔹 Tarefas OK</p>
-      <h2 id="dash-tasks">0%</h2>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+  <!-- CONVIDADOS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fde8ed;">👸</div>
+      <span class="card-title">Convidados</span>
+      <span class="card-count" id="count-guests">0</span>
     </div>
-    <div class="card-dash">
-      <p>🔹 Orçamento</p>
-      <h2 id="dash-budget">R$ 0</h2>
+    <div class="card-body">
+      <ul class="guest-list" id="guest-list"></ul>
+      <div class="input-row" style="margin-top:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <input class="inp" id="inp-guest" placeholder="Nome do convidado" style="min-width:130px;" onkeydown="if(event.key==='Enter') addGuest()">
+        <select class="inp-select" id="sel-guest-status">
+          <option value="aguardando">⏳ Aguardando</option>
+          <option value="confirmado">✅ Confirmado</option>
+          <option value="cancelado">❌ Cancelado</option>
+        </select>
+        <button class="btn-add" onclick="addGuest()">+ Adicionar</button>
+      </div>
     </div>
   </div>
 
-  <div class="main-grid">
-    <!-- PAINEL DE CONVIDADOS -->
-    <div class="panel">
-      <div class="panel-header">
-        <h3>👥 Convidados</h3>
-        <span class="badge" id="badge-guests">0</span>
-      </div>
-      <div class="input-group">
-        <input type="text" id="input-guest" placeholder="Nome do convidado...">
-        <div class="input-row-inline">
-          <select id="select-guest-status" class="status-select" style="flex: 1; padding: 12px;">
-            <option value="Aguardando">Aguardando</option>
-            <option value="Confirmado">Confirmado</option>
-            <option value="Cancelado">Cancelado</option>
-          </select>
-          <button class="btn-add" onclick="addGuest()" style="flex: 1;">+ Adicionar</button>
-        </div>
-      </div>
-      <ul class="list-items" id="list-guests"></ul>
+  <!-- CARDÁPIO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff3e0;">🎂</div>
+      <span class="card-title">Cardápio & Comes e Bebes</span>
+      <span class="card-count" id="count-food">0</span>
     </div>
-
-    <!-- PAINEL DE CARDÁPIO -->
-    <div class="panel">
-      <div class="panel-header">
-        <h3>🍔 Cardápio & Comes</h3>
-        <span class="badge" id="badge-menu">0</span>
+    <div class="card-body">
+      <ul class="check-list" id="food-list"></ul>
+      <div class="input-row" style="margin-top:1rem;">
+        <input class="inp" id="inp-food" placeholder="Ex: Bolo principal, salgados..." onkeydown="if(event.key==='Enter') addCheck('food')">
+        <button class="btn-add" onclick="addCheck('food')">+</button>
       </div>
-      <div class="input-group">
-        <div class="input-row-inline">
-          <input type="text" id="input-menu" placeholder="Ex: Bolo principal, salgadinhos...">
-          <button class="btn-add" onclick="addMenuItem()" style="width: 50px;">+</button>
-        </div>
-      </div>
-      <ul class="list-items" id="list-menu"></ul>
-    </div>
-
-    <!-- PAINEL DE DECORAÇÃO -->
-    <div class="panel">
-      <div class="panel-header">
-        <h3>🌸 Decoração</h3>
-        <span class="badge" id="badge-decor">0</span>
-      </div>
-      <div class="input-group">
-        <div class="input-row-inline">
-          <input type="text" id="input-decor" placeholder="Ex: Balões, arranjo, luzes...">
-          <button class="btn-add" onclick="addDecorItem()" style="width: 50px;">+</button>
-        </div>
-      </div>
-      <ul class="list-items" id="list-decor"></ul>
     </div>
   </div>
 
-  <script>
-    const SUPABASE_URL = "https://tspjdgzrjaqooyrnudcr.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1krT";
+  <!-- DECORAÇÃO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f3e5f5;">🌸</div>
+      <span class="card-title">Decoração</span>
+      <span class="card-count" id="count-decor">0</span>
+    </div>
+    <div class="card-body">
+      <ul class="check-list" id="decor-list"></ul>
+      <div class="input-row" style="margin-top:1rem;">
+        <input class="inp" id="inp-decor" placeholder="Ex: Balões, arranjos, faixas..." onkeydown="if(event.key==='Enter') addCheck('decor')">
+        <button class="btn-add" onclick="addCheck('decor')">+</button>
+      </div>
+    </div>
+  </div>
 
-    let AppData = {
-      partyDate: "",
-      guests: [],
-      menu: [],
-      decor: []
+  <!-- MÚSICA & ENTRETENIMENTO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#e8f5e9;">🎵</div>
+      <span class="card-title">Música & Entretenimento</span>
+      <span class="card-count" id="count-music">0</span>
+    </div>
+    <div class="card-body">
+      <ul class="check-list" id="music-list"></ul>
+      <div class="input-row" style="margin-top:1rem;">
+        <input class="inp" id="inp-music" placeholder="Ex: DJ, playlist, walsa..." onkeydown="if(event.key==='Enter') addCheck('music')">
+        <button class="btn-add" onclick="addCheck('music')">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VESTIDO & LOOKS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fce4ec;">👗</div>
+      <span class="card-title">Vestido & Looks</span>
+      <span class="card-count" id="count-looks">0</span>
+    </div>
+    <div class="card-body">
+      <ul class="check-list" id="looks-list"></ul>
+      <div class="input-row" style="margin-top:1rem;">
+        <input class="inp" id="inp-looks" placeholder="Ex: Vestido, maquiagem, sapato..." onkeydown="if(event.key==='Enter') addCheck('looks')">
+        <button class="btn-add" onclick="addCheck('looks')">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORNECEDORES -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#e3f2fd;">📋</div>
+      <span class="card-title">Fornecedores & Serviços</span>
+      <span class="card-count" id="count-vendors">0</span>
+    </div>
+    <div class="card-body">
+      <ul class="check-list" id="vendors-list"></ul>
+      <div class="input-row" style="margin-top:1rem;">
+        <input class="inp" id="inp-vendors" placeholder="Ex: Buffet, fotógrafo, cerimonialista..." onkeydown="if(event.key==='Enter') addCheck('vendors')">
+        <button class="btn-add" onclick="addCheck('vendors')">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORÇAMENTO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff9e0;">💰</div>
+      <span class="card-title">Orçamento</span>
+    </div>
+    <div class="card-body">
+      <div class="budget-total">
+        <div class="budget-total-label">TOTAL ESTIMADO</div>
+        <div class="budget-total-value" id="budget-total-value">R$ 0,00</div>
+      </div>
+      <ul class="budget-list" id="budget-list"></ul>
+      <div class="input-row" style="margin-top:1rem; flex-wrap:wrap;">
+        <input class="inp" id="inp-budget-name" placeholder="Item (ex: Buffet)" onkeydown="if(event.key==='Enter') addBudget()">
+        <input class="inp-money" id="inp-budget-val" type="number" placeholder="R$" onkeydown="if(event.key==='Enter') addBudget()">
+        <button class="btn-add" onclick="addBudget()">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAREFAS GERAIS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#e8eaf6;">✅</div>
+      <span class="card-title">Tarefas Gerais</span>
+      <span class="card-count" id="count-tasks">0</span>
+    </div>
+    <div class="card-body">
+      <ul class="check-list" id="tasks-list"></ul>
+      <div class="input-row" style="margin-top:1rem;">
+        <input class="inp" id="inp-tasks" placeholder="Ex: Enviar convites, contratar DJ..." onkeydown="if(event.key==='Enter') addCheck('tasks')">
+        <button class="btn-add" onclick="addCheck('tasks')">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOTOS & INSPIRAÇÕES -->
+  <div class="card card-full">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fce4ec;">📸</div>
+      <span class="card-title">Fotos & Inspirações</span>
+      <span class="card-count" id="count-photos">0</span>
+    </div>
+    <div class="card-body">
+      <div class="photos-grid" id="photos-grid"></div>
+      <label class="photo-upload-btn" for="photo-upload">
+        <span>📷</span>
+        Clique para adicionar fotos ou inspirações
+        <input type="file" id="photo-upload" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">
+      </label>
+    </div>
+  </div>
+
+  <!-- ANOTAÇÕES -->
+  <div class="card card-full">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f3e5f5;">📝</div>
+      <span class="card-title">Anotações & Ideias</span>
+    </div>
+    <div class="card-body">
+      <textarea class="notes-area" id="notes-area" placeholder="Escreva aqui suas ideias, lembretes, temas, desejos para a festa da Eloisa... ✨" oninput="saveNotesState()"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL DATA -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h2>🎀 Data & Local da Festa</h2>
+    <label>Data da festa</label>
+    <input class="inp" type="date" id="inp-date">
+    <label>Local / Espaço</label>
+    <input class="inp" id="inp-venue" placeholder="Ex: Buffet Estrelas, Salão Jardim...">
+    <label>Horário</label>
+    <input class="inp" id="inp-time" placeholder="Ex: 19h às 00h">
+    <label>Tema da festa</label>
+    <input class="inp" id="inp-theme" placeholder="Ex: Jardim Encantado, Paris, Princesa...">
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveEvent()">Salvar ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE NOTICE -->
+<div class="save-notice" id="save-notice">✓ Salvo no Supabase</div>
+
+<!-- INTEGRAÇÃO DO SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ====== CONFIG SUPABASE ======
+const SUPABASE_URL = "https://tspjdgzrjaqooyrnudcr.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWh0JyIJa5eIHtTw_bdm-1krT";
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let state = {
+  eventDate: '', venue: '', time: '', theme: '',
+  guests: [],
+  food: [], decor: [], music: [], looks: [], vendors: [], tasks: [],
+  budget: [],
+  notes: '',
+  photos: []
+};
+
+// Carrega o estado global direto do banco de dados unificado
+async function loadData() {
+  try {
+    const { data, error } = await _supabase.from('festas').select('*').eq('id', 1).single();
+    if (!error && data && data.dados_festa) {
+      state = data.dados_festa;
+    } else if (error && error.code === 'PGRST116') {
+      // Se não houver a linha com id=1, tenta carregar do localStorage ou cria padrão
+      const saved = localStorage.getItem('eloisa15anos');
+      if (saved) state = { ...state, ...JSON.parse(saved) };
+      await syncToSupabase();
+    }
+  } catch(e) {
+    // Fallback de segurança local se a rede falhar
+    const saved = localStorage.getItem('eloisa15anos');
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+  }
+  renderAll();
+}
+
+// Sincroniza o objeto completo com a nuvem mantendo os dados seguros
+async function syncToSupabase() {
+  try {
+    localStorage.setItem('eloisa15anos', JSON.stringify(state));
+    await _supabase.from('festas').upsert([{ id: 1, dados_festa: state }]);
+    showSave();
+  } catch(e) {}
+  updateStats();
+}
+
+function showSave() {
+  const el = document.getElementById('save-notice');
+  el.classList.add('show');
+  clearTimeout(window._saveTimer);
+  window._saveTimer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ====== MODAL ======
+function openModal() {
+  document.getElementById('inp-date').value = state.eventDate || '';
+  document.getElementById('inp-venue').value = state.venue || '';
+  document.getElementById('inp-time').value = state.time || '';
+  document.getElementById('inp-theme').value = state.theme || '';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+function saveEvent() {
+  state.eventDate = document.getElementById('inp-date').value;
+  state.venue = document.getElementById('inp-venue').value;
+  state.time = document.getElementById('inp-time').value;
+  state.theme = document.getElementById('inp-theme').value;
+  updateDateBadge();
+  closeModal();
+  syncToSupabase();
+}
+function updateDateBadge() {
+  let text = 'Definir data da festa';
+  if (state.eventDate) {
+    const d = new Date(state.eventDate + 'T12:00:00');
+    text = d.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+    if (state.venue) text += ' · ' + state.venue;
+  }
+  document.getElementById('date-display').textContent = text;
+}
+
+// ====== GUESTS ======
+function addGuest() {
+  const name = document.getElementById('inp-guest').value.trim();
+  if (!name) return;
+  const status = document.getElementById('sel-guest-status').value;
+  state.guests.push({ id: Date.now(), name, status });
+  document.getElementById('inp-guest').value = '';
+  renderGuests();
+  syncToSupabase();
+}
+function removeGuest(id) {
+  state.guests = state.guests.filter(g => g.id !== id);
+  renderGuests();
+  syncToSupabase();
+}
+function changeGuestStatus(id, status) {
+  const g = state.guests.find(g => g.id === id);
+  if (g) { g.status = status; renderGuests(); syncToSupabase(); }
+}
+function renderGuests() {
+  const ul = document.getElementById('guest-list');
+  const statusMap = {
+    confirmado: { color: 'status-confirmado', label: 'Confirmado' },
+    aguardando: { color: 'status-aguardando', label: 'Aguardando' },
+    cancelado: { color: 'status-cancelado', label: 'Cancelado' }
+  };
+  if (!state.guests || !state.guests.length) {
+    ul.innerHTML = '<li class="empty-msg">Nenhum convidado ainda...</li>';
+  } else {
+    ul.innerHTML = state.guests.map(g => {
+      const s = statusMap[g.status] || statusMap.aguardando;
+      return `<li class="guest-item">
+        <div class="guest-status ${s.color}"></div>
+        <span class="guest-name">${esc(g.name)}</span>
+        <select class="inp-select" style="font-size:0.75rem;padding:0.2rem 0.4rem;border-radius:8px;" onchange="changeGuestStatus(${g.id}, this.value)">
+          <option value="aguardando" ${g.status==='aguardando'?'selected':''}>⏳ Aguardando</option>
+          <option value="confirmado" ${g.status==='confirmado'?'selected':''}>✅ Confirmado</option>
+          <option value="cancelado" ${g.status==='cancelado'?'selected':''}>❌ Cancelado</option>
+        </select>
+        <button class="guest-remove" onclick="removeGuest(${g.id})">✕</button>
+      </li>`;
+    }).join('');
+  }
+  document.getElementById('count-guests').textContent = state.guests ? state.guests.length : 0;
+}
+
+// ====== CHECKLISTS ======
+function addCheck(type) {
+  const inp = document.getElementById('inp-'+type);
+  const text = inp.value.trim();
+  if (!text) return;
+  state[type].push({ id: Date.now(), text, done: false });
+  inp.value = '';
+  renderCheck(type);
+  syncToSupabase();
+}
+function toggleCheck(type, id) {
+  const item = state[type].find(i => i.id === id);
+  if (item) { item.done = !item.done; renderCheck(type); syncToSupabase(); }
+}
+function removeCheck(type, id) {
+  state[type] = state[type].filter(i => i.id !== id);
+  renderCheck(type);
+  syncToSupabase();
+}
+function renderCheck(type) {
+  const ul = document.getElementById(type+'-list');
+  if (!state[type] || !state[type].length) {
+    ul.innerHTML = '<li class="empty-msg">Lista vazia...</li>';
+  } else {
+    ul.innerHTML = state[type].map(i => `
+      <li class="check-item">
+        <input type="checkbox" ${i.done?'checked':''} onchange="toggleCheck('${type}', ${i.id})">
+        <label class="check-label ${i.done?'done':''}" onclick="toggleCheck('${type}', ${i.id})">${esc(i.text)}</label>
+        <button class="check-remove" onclick="removeCheck('${type}', ${i.id})">✕</button>
+      </li>`).join('');
+  }
+  const countEl = document.getElementById('count-'+type);
+  if (countEl) countEl.textContent = state[type] ? state[type].length : 0;
+}
+
+// ====== BUDGET ======
+function addBudget() {
+  const name = document.getElementById('inp-budget-name').value.trim();
+  const val = parseFloat(document.getElementById('inp-budget-val').value) || 0;
+  if (!name) return;
+  state.budget.push({ id: Date.now(), name, value: val });
+  document.getElementById('inp-budget-name').value = '';
+  document.getElementById('inp-budget-val').value = '';
+  renderBudget();
+  syncToSupabase();
+}
+function removeBudget(id) {
+  state.budget = state.budget.filter(b => b.id !== id);
+  renderBudget();
+  syncToSupabase();
+}
+function renderBudget() {
+  const ul = document.getElementById('budget-list');
+  const total = state.budget ? state.budget.reduce((s,b) => s+b.value, 0) : 0;
+  if (!state.budget || !state.budget.length) {
+    ul.innerHTML = '<li class="empty-msg">Nenhum item no orçamento...</li>';
+  } else {
+    ul.innerHTML = state.budget.map(b => `
+      <li class="budget-item">
+        <span class="budget-name">${esc(b.name)}</span>
+        <span class="budget-value">R$ ${b.value.toFixed(2).replace('.',',')}</span>
+        <button class="budget-remove" onclick="removeBudget(${b.id})">✕</button>
+      </li>`).join('');
+  }
+  document.getElementById('budget-total-value').textContent = 'R$ ' + total.toFixed(2).replace('.',',');
+}
+
+// ====== PHOTOS ======
+function addPhotos(event) {
+  const files = Array.from(event.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      if(!state.photos) state.photos = [];
+      state.photos.push({ id: Date.now() + Math.random(), src: e.target.result });
+      renderPhotos();
+      syncToSupabase();
     };
+    reader.readAsDataURL(file);
+  });
+  event.target.value = '';
+}
+function removePhoto(id) {
+  state.photos = state.photos.filter(p => p.id !== id);
+  renderPhotos();
+  syncToSupabase();
+}
+function renderPhotos() {
+  const grid = document.getElementById('photos-grid');
+  if (!state.photos || !state.photos.length) {
+    grid.innerHTML = '';
+  } else {
+    grid.innerHTML = state.photos.map(p => `
+      <div class="photo-thumb">
+        <img src="${p.src}" alt="Foto">
+        <button class="photo-remove" onclick="removePhoto(${p.id})">✕</button>
+      </div>`).join('');
+  }
+  const countEl = document.getElementById('count-photos');
+  if (countEl) countEl.textContent = state.photos ? state.photos.length : 0;
+}
 
-    async function fetchGuestsFromSupabase() {
-      try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/convidados?select=*`, {
-          method: "GET",
-          headers: {
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-            "Content-Type": "application/json"
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) {
-            AppData.guests = data;
-            saveLocal();
-            renderAll();
-          }
-        }
-      } catch (error) {
-        console.error("Erro ao buscar convidados:", error);
-      }
-    }
+// ====== NOTES ======
+function saveNotesState() {
+  state.notes = document.getElementById('notes-area').value;
+  syncToSupabase();
+}
 
-    async function saveGuestToSupabase(nome, status) {
-      try {
-        await fetch(`${SUPABASE_URL}/rest/v1/convidados`, {
-          method: "POST",
-          headers: {
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-            "Content-Type": "application/json",
-            "Prefer": "return=minimal"
-          },
-          body: JSON.stringify({ nome: nome, status: status })
-        });
-        fetchGuestsFromSupabase();
-      } catch (error) {
-        console.error("Erro ao salvar convidado:", error);
-      }
-    }
+// ====== STATS ======
+function updateStats() {
+  const totalGuests = state.guests ? state.guests.length : 0;
+  const confirmed = state.guests ? state.guests.filter(g => g.status === 'confirmado').length : 0;
+  document.getElementById('stat-guests').textContent = totalGuests;
+  document.getElementById('stat-confirmed').textContent = confirmed;
 
-    async function updateGuestStatusInSupabase(nome, novoStatus) {
-      try {
-        await fetch(`${SUPABASE_URL}/rest/v1/convidados?nome=eq.${encodeURIComponent(nome)}`, {
-          method: "PATCH",
-          headers: {
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ status: novoStatus })
-        });
-      } catch (error) {
-        console.error("Erro ao atualizar status:", error);
-      }
-    }
+  const allTasks = [
+    ...(state.food || []), ...(state.decor || []), ...(state.music || []), 
+    ...(state.looks || []), ...(state.vendors || []), ...(state.tasks || [])
+  ];
+  const doneTasks = allTasks.filter(t => t.done).length;
+  const pct = allTasks.length ? Math.round(doneTasks / allTasks.length * 100) : 0;
+  document.getElementById('stat-tasks').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
 
-    async function deleteGuestFromSupabase(nome) {
-      try {
-        await fetch(`${SUPABASE_URL}/rest/v1/convidados?nome=eq.${encodeURIComponent(nome)}`, {
-          method: "DELETE",
-          headers: {
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-          }
-        });
-      } catch (error) {
-        console.error("Erro ao deletar:", error);
-      }
-    }
+  const totalBudget = state.budget ? state.budget.reduce((s,b) => s+b.value, 0) : 0;
+  document.getElementById('stat-budget').textContent = totalBudget >= 1000
+    ? 'R$ ' + (totalBudget/1000).toFixed(1).replace('.',',') + 'k'
+    : 'R$ ' + totalBudget.toFixed(0);
+}
 
-    function saveLocal() {
-      localStorage.setItem('eloisa_15_anos_data', JSON.stringify(AppData));
-    }
+// ====== RENDER ALL ======
+function renderAll() {
+  updateDateBadge();
+  renderGuests();
+  ['food','decor','music','looks','vendors','tasks'].forEach(renderCheck);
+  renderBudget();
+  renderPhotos();
+  document.getElementById('notes-area').value = state.notes || '';
+  updateStats();
+}
 
-    window.onload = async function() {
-      try {
-        const local = localStorage.getItem('eloisa_15_anos_data');
-        if (local) {
-          AppData = JSON.parse(local);
-        }
-        renderAll();
-        await fetchGuestsFromSupabase();
-        startCountdown();
-      } catch (e) {
-        console.log("Modo local ativo:", e);
-        renderAll();
-      }
-    };
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 
-    function configurarData() {
-      const dataDigitada = prompt("Digite a data da festa (AAAA-MM-DD):", AppData.partyDate || "2026-12-31");
-      if (dataDigitada) {
-        AppData.partyDate = dataDigitada;
-        saveLocal();
-        startCountdown();
-      }
-    }
-
-    function startCountdown() {
-      const btn = document.getElementById("btn-countdown");
-      if (!AppData.partyDate) return;
-
-      function updateClock() {
-        const t = Date.parse(AppData.partyDate) - Date.parse(new Date());
-        if (t <= 0) {
-          btn.innerText = "🎉 É HOJE!!! 🎉";
-          return;
-        }
-        const dias = Math.floor(t / (1000 * 60 * 60 * 24));
-        btn.innerText = `📅 Faltam ${dias} dias para a festa!`;
-      }
-      updateClock();
-      setInterval(updateClock, 60000);
-    }
-
-    function addGuest() {
-      const input = document.getElementById("input-guest");
-      const selectStatus = document.getElementById("select-guest-status");
-      const name = input.value.trim();
-      const status = selectStatus.value;
-
-      if (!name) return;
-
-      if (!AppData.guests.some(g => g.nome === name)) {
-        AppData.guests.push({ nome: name, status: status });
-        saveLocal();
-        renderAll();
-        saveGuestToSupabase(name, status);
-      }
-      input.value = "";
-    }
-
-    function changeGuestStatus(index, newStatus) {
-      const guest = AppData.guests[index];
-      guest.status = newStatus;
-      saveLocal();
-      updateCounters();
-      updateGuestStatusInSupabase(guest.nome, newStatus);
-    }
-
-    function removeGuest(index) {
-      const guest = AppData.guests[index];
-      AppData.guests.splice(index, 1);
-      saveLocal();
+// ====== INIT ======
+window.onload = function() {
+  loadData();
+  
+  // População inicial caso venha totalmente zerado do banco
+  setTimeout(() => {
+    if ((!state.guests || !state.guests.length) && (!state.food || !state.food.length)) {
+      state.food = [
+        {id:1,text:'🎂 Bolo principal de 15 anos',done:false},
+        {id:2,text:'🎀 Bolo fake para sessão de fotos',done:false},
+        {id:3,text:'🥗 Mesa de frios e salgados',done:false},
+        {id:4,text:'🍭 Mesa de doces e sobremesas',done:false},
+        {id:5,text:'🥂 Bebidas (refrigerantes, sucos)',done:false},
+        {id:6,text:'🍾 Brinde especial',done:false},
+      ];
+      state.decor = [
+        {id:10,text:'🎈 Balões temáticos',done:false},
+        {id:11,text:'🌸 Arranjos florais',done:false},
+        {id:12,text:'✨ Iluminação cênica',done:false},
+        {id:13,text:'📸 Painel para fotos (backdrop)',done:false},
+        {id:14,text:'🎀 Faixa de aniversário',done:false},
+        {id:15,text:'🪑 Decoração das mesas',done:false},
+      ];
+      state.music = [
+        {id:20,text:'🎵 Playlist / DJ',done:false},
+        {id:21,text:'💃 Valsa dos 15 anos',done:false},
+        {id:22,text:'🎤 Música de entrada',done:false},
+        {id:23,text:'🎶 Música de corte do bolo',done:false},
+      ];
+      state.tasks = [
+        {id:30,text:'💌 Enviar convites',done:false},
+        {id:31,text:'📋 Confirmar fornecedores',done:false},
+        {id:32,text:'📸 Contratar fotógrafo/videomaker',done:false},
+        {id:33,text:'🎁 Organizar mesa de presentes',done:false},
+        {id:34,text:'💐 Bouquet de flores',done:false},
+      ];
       renderAll();
-      deleteGuestFromSupabase(guest.nome);
+      syncToSupabase();
     }
-
-    function addMenuItem() {
-      const input = document.getElementById("input-menu");
-      const val = input.value.trim();
-      if (!val) return;
-      AppData.menu.push(val);
-      saveLocal();
-      renderAll();
-      input.value = "";
-    }
-
-    function removeMenu(index) {
-      AppData.menu.splice(index, 1);
-      saveLocal();
-      renderAll();
-    }
-
-    function addDecorItem() {
-      const input = document.getElementById("input-decor");
-      const val = input.value.trim();
-      if (!val) return;
-      AppData.decor.push(val);
-      saveLocal();
-      renderAll();
-      input.value = "";
-    }
-
-    function removeDecor(index) {
-      AppData.decor.splice(index, 1);
-      saveLocal();
-      renderAll();
-    }
-
-    function updateCounters() {
-      const totalGuests = AppData.guests.length;
-      const confirmed = AppData.guests.filter(g => g.status === "Confirmado").length;
-
-      document.getElementById("dash-guests").innerText = totalGuests;
-      document.getElementById("dash-confirmed").innerText = confirmed;
-      document.getElementById("badge-guests").innerText = totalGuests;
-      document.getElementById("badge-menu").innerText = AppData.menu.length;
-      document.getElementById("badge-decor").innerText = AppData.decor.length;
-    }
-
-    // Calcula a porcentagem de tarefas concluídas baseada no cardápio e decoração
-    function atualizarProgressoTarefas() {
-      const totalItens = AppData.menu.length + AppData.decor.length;
-      if (totalItens === 0) {
-        document.getElementById("dash-tasks").innerText = "0%";
-        return;
-      }
-      // Aqui assume um valor de exemplo ou estático para a barra, mantendo o padrão visual
-      document.getElementById("dash-tasks").innerText = "0%";
-    }
-
-    function renderAll() {
-      updateCounters();
-      atualizarProgressoTarefas();
-
-      const listG = document.getElementById("list-guests");
-      listG.innerHTML = "";
-      AppData.guests.forEach((g, i) => {
-        const li = document.createElement("li");
-        li.className = "item-row";
-        li.innerHTML = `
-          <span class="item-title">${g.nome}</span>
-          <div class="item-actions">
-            <select class="status-select" onchange="changeGuestStatus(${i}, this.value)">
-              <option value="Aguardando" ${g.status === 'Aguardando' ? 'selected' : ''}>Aguardando</option>
-              <option value="Confirmado" ${g.status === 'Confirmado' ? 'selected' : ''}>Confirmado</option>
-              <option value="Cancelado" ${g.status === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
-            </select>
-            <button class="btn-del" onclick="removeGuest(${i})">&times;</button>
-          </div>
-        `;
-        listG.appendChild(li);
-      });
-
-      const listM = document.getElementById("list-menu");
-      listM.innerHTML = "";
-      AppData.menu.forEach((item, i) => {
-        const li = document.createElement("li");
-        li.className = "item-row";
-        li.innerHTML = `
-          <span class="item-title">${item}</span>
-          <button class="btn-del" onclick="removeMenu(${i})">&times;</button>
-        `;
-        listM.appendChild(li);
-      });
-
-      const listD = document.getElementById("list-decor");
-      listD.innerHTML = "";
-      AppData.decor.forEach((item, i) => {
-        const li = document.createElement("li");
-        li.className = "item-row";
-        li.innerHTML = `
-          <span class="item-title">${item}</span>
-          <button class="btn-del" onclick="removeDecor(${i})">&times;</button>
-        `;
-        listD.appendChild(li);
-      });
-    }
-  </script>
+  }, 1000);
+};
+</script>
 </body>
 </html>
