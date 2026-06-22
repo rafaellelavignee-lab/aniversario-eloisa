@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmar Presença — 15 Anos da Eloisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#060f1e; --navy-mid:#0d1f3c; --navy-card:#0f2248;
+  --navy-border:#1c3460; --gold:#c9a96e; --gold-mid:#e4c98a;
+  --gold-light:#f5e6c0; --accent:#4d91e8;
+  --deep:#eaf0fc; --text:#c0d4ee; --muted:#5a7aaa;
+  --green:#4ade80; --red:#f87171; --yellow:#fbbf24;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--navy);color:var(--text);
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:2rem 1rem;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 20%,rgba(201,169,110,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 70% at 80% 80%,rgba(77,145,232,.06) 0%,transparent 60%);
+}
+
+/* WRAP */
+.wrap{
+  position:relative;z-index:1;
+  width:100%;max-width:460px;
+}
+
+/* BRAND */
+.brand{text-align:center;margin-bottom:1.8rem}
+.brand-crown{font-size:2.5rem;display:block;animation:float 3s ease-in-out infinite;margin-bottom:.5rem}
+@keyframes float{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-8px) rotate(6deg)}100%{transform:translateY(0) rotate(-6deg)}}
+.brand-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--deep)}
+.brand-title em{font-style:italic;color:var(--gold-mid)}
+.brand-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--muted);margin-top:.2rem}
+
+/* CARD */
+.card{
+  background:rgba(13,31,60,.97);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--navy-border);
+  border-radius:24px;
+  padding:2rem 2rem 2.2rem;
+  box-shadow:0 12px 50px rgba(0,0,0,.45);
+}
+
+/* STATES */
+.state{display:none}
+.state.active{display:block}
+
+/* LOADING */
+.spinner{
+  width:40px;height:40px;margin:1rem auto;
+  border:3px solid rgba(77,145,232,.2);
+  border-top-color:var(--accent);
+  border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{text-align:center;color:var(--muted);font-size:.88rem;margin-top:.5rem}
+
+/* GUEST HEADER */
+.greeting{font-size:.82rem;color:var(--muted);margin-bottom:.2rem}
+.guest-name{
+  font-family:'Playfair Display',serif;
+  font-size:2rem;color:var(--gold-light);
+  line-height:1.1;margin-bottom:1.2rem;
+}
+
+/* EVENT INFO */
+.event-box{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--navy-border);
+  border-radius:14px;padding:.9rem 1.1rem;
+  margin-bottom:1.4rem;
+}
+.event-row{
+  display:flex;align-items:center;gap:.65rem;
+  font-size:.83rem;color:var(--text);padding:.25rem 0;
+}
+.event-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:.25rem}
+.event-row-icon{font-size:1rem;flex-shrink:0;width:20px;text-align:center}
+
+/* QUESTION */
+.question{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;color:var(--deep);
+  text-align:center;margin-bottom:1.2rem;
+}
+
+/* CHOICE BUTTONS */
+.choice-btns{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.5rem}
+.choice-btn{
+  padding:1rem .8rem;border:2px solid var(--navy-border);
+  border-radius:16px;background:rgba(255,255,255,.04);
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .25s;display:flex;flex-direction:column;
+  align-items:center;gap:.4rem;
+}
+.choice-btn:hover{transform:translateY(-2px)}
+.choice-btn.yes:hover,.choice-btn.yes.selected{
+  border-color:var(--green);
+  background:rgba(74,222,128,.1);
+  box-shadow:0 4px 16px rgba(74,222,128,.15);
+}
+.choice-btn.no:hover,.choice-btn.no.selected{
+  border-color:var(--red);
+  background:rgba(248,113,113,.1);
+}
+.choice-emoji{font-size:1.8rem}
+.choice-label{font-size:.83rem;font-weight:500;color:var(--text)}
+
+/* FORM (companion + confirm) */
+.form-section{
+  margin-top:1.2rem;
+  border-top:1px solid var(--navy-border);
+  padding-top:1.2rem;
+  display:none;
+}
+.form-section.visible{display:block}
+.form-title{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;color:var(--deep);margin-bottom:1rem;
+}
+.field{margin-bottom:1rem}
+.field label{
+  display:block;font-size:.75rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;
+}
+.inp{
+  width:100%;padding:.7rem 1rem;
+  border:1.5px solid var(--navy-border);
+  border-radius:12px;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;
+  background:rgba(255,255,255,.05);color:var(--deep);
+  outline:none;transition:border-color .2s;
+}
+.inp::placeholder{color:var(--muted)}
+.inp:focus{border-color:var(--gold)}
+
+/* COMPANION TOGGLE */
+.companion-toggle{
+  display:flex;gap:.5rem;margin-bottom:1rem;
+}
+.tog-btn{
+  flex:1;padding:.55rem;border-radius:10px;
+  border:1.5px solid var(--navy-border);
+  background:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.83rem;
+  color:var(--muted);transition:all .2s;
+}
+.tog-btn.active{
+  border-color:var(--gold);
+  background:rgba(201,169,110,.1);
+  color:var(--gold-mid);font-weight:500;
+}
+
+/* SUBMIT */
+.btn-submit{
+  width:100%;padding:.85rem;
+  background:linear-gradient(135deg,var(--gold),#b8923a);
+  color:var(--navy);border:none;border-radius:14px;
+  font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;
+  cursor:pointer;transition:all .25s;letter-spacing:.02em;
+  margin-top:.3rem;
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,169,110,.35)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-submit .spinner-sm{
+  display:none;width:18px;height:18px;
+  border:2px solid rgba(6,15,30,.3);border-top-color:var(--navy);
+  border-radius:50%;animation:spin .7s linear infinite;margin:0 auto;
+}
+.btn-submit.loading .btn-text{display:none}
+.btn-submit.loading .spinner-sm{display:block}
+
+.btn-decline{
+  width:100%;padding:.75rem;
+  background:rgba(248,113,113,.12);
+  border:1.5px solid rgba(248,113,113,.3);
+  color:var(--red);border-radius:14px;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;
+  cursor:pointer;transition:all .2s;margin-top:.8rem;
+}
+.btn-decline:hover{background:rgba(248,113,113,.2)}
+.btn-decline:disabled{opacity:.5;cursor:not-allowed}
+
+/* SUCCESS STATES */
+.success-icon{font-size:3.5rem;display:block;text-align:center;margin-bottom:.8rem}
+.success-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem;color:var(--deep);
+  text-align:center;margin-bottom:.5rem;
+}
+.success-msg{
+  text-align:center;color:var(--muted);
+  font-size:.88rem;line-height:1.6;margin-bottom:1.2rem;
+}
+.success-msg strong{color:var(--text)}
+.success-box{
+  border-radius:14px;padding:1rem 1.1rem;
+  font-size:.83rem;text-align:center;margin-bottom:.8rem;
+}
+.success-box.green{
+  background:rgba(74,222,128,.08);
+  border:1px solid rgba(74,222,128,.2);
+  color:var(--green);
+}
+.success-box.red{
+  background:rgba(248,113,113,.08);
+  border:1px solid rgba(248,113,113,.2);
+  color:var(--red);
+}
+.detail-item{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.82rem;padding:.35rem 0;color:var(--text);
+}
+.detail-item:not(:last-child){border-bottom:1px solid rgba(255,255,255,.06)}
+.link-gift{
+  display:block;text-align:center;margin-top:1.2rem;
+  padding:.65rem 1.3rem;
+  border:1.5px solid var(--navy-border);border-radius:12px;
+  color:var(--muted);font-size:.83rem;
+  text-decoration:none;transition:all .2s;
+}
+.link-gift:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ALREADY */
+.already-box{
+  border-radius:14px;padding:1rem 1.1rem;
+  background:rgba(201,169,110,.08);
+  border:1px solid rgba(201,169,110,.2);
+  color:var(--gold-light);font-size:.85rem;
+  text-align:center;margin:1rem 0;
+}
+
+/* ERROR */
+.err-icon{font-size:3rem;text-align:center;display:block;margin-bottom:.8rem}
+.err-msg{text-align:center;color:var(--muted);font-size:.88rem;line-height:1.6}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:.7rem;margin:.8rem 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,.3))}
+.divider::after{background:linear-gradient(90deg,rgba(201,169,110,.3),transparent)}
+.divider span{color:var(--gold);font-size:.75rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- BRAND -->
+  <div class="brand">
+    <span class="brand-crown">🦋</span>
+    <p class="brand-title">15 Anos de <em>Eloisa</em></p>
+    <p class="brand-sub">Confirmação de Presença</p>
+  </div>
+
+  <div class="card">
+
+    <!-- LOADING -->
+    <div id="s-loading" class="state active">
+      <div class="spinner"></div>
+      <p class="loading-txt">Carregando seu convite...</p>
+    </div>
+
+    <!-- ERRO / TOKEN INVÁLIDO -->
+    <div id="s-error" class="state">
+      <span class="err-icon">🔗</span>
+      <p class="err-msg">Link inválido ou expirado.<br>Verifique o link que você recebeu.</p>
+    </div>
+
+    <!-- JÁ RESPONDEU -->
+    <div id="s-already" class="state">
+      <p class="greeting">Olá!</p>
+      <p class="guest-name" id="already-nome"></p>
+      <div class="already-box" id="already-msg"></div>
+      <p style="text-align:center;font-size:.78rem;color:var(--muted)">
+        Respondeu errado? Entre em contato com a família da Eloisa.
+      </p>
+    </div>
+
+    <!-- RSVP FORM -->
+    <div id="s-rsvp" class="state">
+      <p class="greeting">Você foi convidado(a)! 🎉</p>
+      <p class="guest-name" id="rsvp-nome"></p>
+
+      <!-- Detalhes da festa -->
+      <div class="event-box" id="rsvp-event-info"></div>
+
+      <div class="divider"><span>✦</span></div>
+
+      <p class="question">Você vai comparecer à festa?</p>
+
+      <!-- Escolha -->
+      <div class="choice-btns">
+        <button class="choice-btn yes" id="btn-yes" onclick="selectChoice('yes')">
+          <span class="choice-emoji">✅</span>
+          <span class="choice-label">Sim, vou!</span>
+        </button>
+        <button class="choice-btn no" id="btn-no" onclick="selectChoice('no')">
+          <span class="choice-emoji">❌</span>
+          <span class="choice-label">Não poderei ir</span>
+        </button>
+      </div>
+
+      <!-- Seção confirmação (aparece ao clicar Sim) -->
+      <div class="form-section" id="form-yes">
+        <p class="form-title">🎊 Ótima notícia! Mais um detalhe:</p>
+
+        <div class="field">
+          <label>Você vai levar um acompanhante?</label>
+          <div class="companion-toggle">
+            <button class="tog-btn" id="tog-sim" onclick="setCompanion(true)">👫 Sim, vou com alguém</button>
+            <button class="tog-btn active" id="tog-nao" onclick="setCompanion(false)">🙋 Vou sozinho(a)</button>
+          </div>
+        </div>
+
+        <div class="field" id="field-companion" style="display:none">
+          <label>Nome do acompanhante</label>
+          <input class="inp" id="inp-companion" placeholder="Nome completo do acompanhante">
+        </div>
+
+        <button class="btn-submit" id="btn-confirm" onclick="enviarResposta('confirmado')">
+          <span class="btn-text">✅ Confirmar Presença</span>
+          <div class="spinner-sm"></div>
+        </button>
+      </div>
+
+      <!-- Seção recusa (aparece ao clicar Não) -->
+      <div class="form-section" id="form-no">
+        <p class="form-title" style="color:var(--muted)">😢 Que pena que não poderá vir...</p>
+        <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem">
+          Clique abaixo para confirmar que não irá comparecer.
+        </p>
+        <button class="btn-decline" id="btn-decline" onclick="enviarResposta('recusado')">
+          ❌ Confirmar que não irei
+        </button>
+      </div>
+    </div>
+
+    <!-- CONFIRMADO COM SUCESSO -->
+    <div id="s-confirmed" class="state">
+      <span class="success-icon">🎉</span>
+      <p class="success-title">Presença Confirmada!</p>
+      <p class="success-msg">
+        Que alegria, <strong id="conf-nome"></strong>!<br>
+        Estamos ansiosos para celebrar com você.
+      </p>
+      <div class="success-box green" id="conf-box">
+        ✅ Presença registrada com sucesso!
+      </div>
+      <div class="event-box" id="conf-event-info"></div>
+      <a href="#" id="conf-gift-link" class="link-gift">🎁 Ver sugestões de presentes</a>
+    </div>
+
+    <!-- RECUSADO COM SUCESSO -->
+    <div id="s-declined" class="state">
+      <span class="success-icon">💙</span>
+      <p class="success-title">Tudo bem!</p>
+      <p class="success-msg">
+        Sentiremos sua falta, <strong id="decl-nome"></strong>.<br>
+        Obrigada por nos avisar.
+      </p>
+      <div class="success-box red">
+        ❌ Sua resposta foi registrada. Até a próxima!
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL      = "https://tspjdgzrjaqooyrnudcr.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWH0JyIJa5eIHtTw_bdm-1krT";
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let guestData  = null;
+let configData = {};
+let choiceAtual = null;
+let comAcompanhante = false;
+const token = new URLSearchParams(location.search).get('token');
+
+// ── STATES ───────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+}
+
+// ── INIT ─────────────────────────────────────
+async function init() {
+  if (!token) { show('error'); return; }
+
+  const [{ data: guest, error }, { data: cfg }] = await Promise.all([
+    _sb.from('convidados').select('*').eq('token_rsvp', token).single(),
+    _sb.from('configuracoes').select('*').eq('id', 1).single()
+  ]);
+
+  if (error || !guest) { show('error'); return; }
+  guestData  = guest;
+  configData = cfg || {};
+
+  // Monta info do evento
+  const eventHtml = buildEventHtml();
+
+  // Já respondeu?
+  if (guest.resposta_rsvp) {
+    document.getElementById('already-nome').textContent = guest.nome;
+    const resp = guest.resposta_rsvp === 'confirmado';
+    let msg = resp
+      ? `✅ Você já confirmou sua presença!${guest.acompanhante ? ' Acompanhante: ' + guest.acompanhante + '.' : ''}`
+      : '❌ Você informou que não poderá comparecer.';
+    document.getElementById('already-msg').textContent = msg;
+    show('already');
+    return;
+  }
+
+  // Mostra formulário RSVP
+  document.getElementById('rsvp-nome').textContent = guest.nome;
+  document.getElementById('rsvp-event-info').innerHTML = eventHtml;
+  document.getElementById('conf-event-info').innerHTML = eventHtml;
+  document.getElementById('conf-gift-link').href = `convite.html?token=${token}`;
+  show('rsvp');
+}
+
+function buildEventHtml() {
+  if (!configData.data_festa && !configData.horario && !configData.local_festa) return '';
+  let html = '';
+  if (configData.data_festa) {
+    const d = new Date(configData.data_festa + 'T12:00:00');
+    html += `<div class="event-row"><span class="event-row-icon">📅</span><span>${d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span></div>`;
+  }
+  if (configData.horario)     html += `<div class="event-row"><span class="event-row-icon">⏰</span><span>${esc(configData.horario)}</span></div>`;
+  if (configData.local_festa) html += `<div class="event-row"><span class="event-row-icon">📍</span><span>${esc(configData.local_festa)}</span></div>`;
+  if (configData.tema)        html += `<div class="event-row"><span class="event-row-icon">✨</span><span>Tema: ${esc(configData.tema)}</span></div>`;
+  return html;
+}
+
+// ── ESCOLHA ──────────────────────────────────
+function selectChoice(choice) {
+  choiceAtual = choice;
+  document.getElementById('btn-yes').classList.toggle('selected', choice === 'yes');
+  document.getElementById('btn-no').classList.toggle('selected',  choice === 'no');
+  document.getElementById('form-yes').classList.toggle('visible', choice === 'yes');
+  document.getElementById('form-no').classList.toggle('visible',  choice === 'no');
+}
+
+function setCompanion(sim) {
+  comAcompanhante = sim;
+  document.getElementById('tog-sim').classList.toggle('active', sim);
+  document.getElementById('tog-nao').classList.toggle('active', !sim);
+  document.getElementById('field-companion').style.display = sim ? 'block' : 'none';
+  if (!sim) document.getElementById('inp-companion').value = '';
+}
+
+// ── ENVIAR ───────────────────────────────────
+async function enviarResposta(resposta) {
+  const btnId = resposta === 'confirmado' ? 'btn-confirm' : 'btn-decline';
+  const btn   = document.getElementById(btnId);
+  btn.classList.add('loading'); btn.disabled = true;
+
+  const acompanhante = (comAcompanhante && resposta === 'confirmado')
+    ? (document.getElementById('inp-companion').value.trim() || null)
+    : null;
+
+  // Chama a função SECURITY DEFINER (aceita acompanhante se existir)
+  let ok = false;
+  try {
+    // Tenta com acompanhante (novo schema)
+    const { data, error } = await _sb.rpc('responder_rsvp', {
+      p_token: token,
+      p_resposta: resposta,
+      p_acompanhante: acompanhante
+    });
+    ok = !error && data;
+
+    // Fallback: função sem acompanhante (schema antigo)
+    if (!ok) {
+      const { data: d2 } = await _sb.rpc('responder_rsvp', { p_token: token, p_resposta: resposta });
+      ok = !!d2;
+    }
+  } catch(e) { ok = false; }
+
+  btn.classList.remove('loading'); btn.disabled = false;
+
+  if (!ok) { alert('Erro ao registrar resposta. Tente novamente.'); return; }
+
+  if (resposta === 'confirmado') {
+    document.getElementById('conf-nome').textContent = guestData.nome;
+    const box = document.getElementById('conf-box');
+    box.innerHTML = acompanhante
+      ? `✅ Presença confirmada! <br>Acompanhante: <strong>${esc(acompanhante)}</strong>`
+      : `✅ Presença confirmada!`;
+    show('confirmed');
+  } else {
+    document.getElementById('decl-nome').textContent = guestData.nome;
+    show('declined');
+  }
+}
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+init();
+</script>
+</body>
+</html>

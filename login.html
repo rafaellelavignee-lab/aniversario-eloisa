@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Anos da Eloisa — Acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --navy:       #060f1e;
+  --navy-mid:   #0d1f3c;
+  --navy-card:  #0f2248;
+  --navy-border:#1c3460;
+  --gold:       #c9a96e;
+  --gold-mid:   #e4c98a;
+  --gold-light: #f5e6c0;
+  --gold-dim:   rgba(201,169,110,0.15);
+  --accent:     #4d91e8;
+  --deep:       #eaf0fc;
+  --text:       #c0d4ee;
+  --muted:      #5a7aaa;
+  --red:        #f87171;
+  --green:      #4ade80;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+/* ── CANVAS + BODY ─────────────────────────── */
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+canvas#bg {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+}
+
+/* ── LAYOUT ────────────────────────────────── */
+.login-shell {
+  position: relative; z-index: 1;
+  display: flex;
+  width: min(900px, 96vw);
+  min-height: min(560px, 94vh);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px var(--navy-border),
+    0 24px 80px rgba(0,0,0,.55),
+    0 0 120px rgba(201,169,110,.05);
+}
+
+/* ── LEFT PANEL ────────────────────────────── */
+.panel-left {
+  flex: 1;
+  background:
+    linear-gradient(160deg, rgba(201,169,110,.14) 0%, transparent 55%),
+    linear-gradient(200deg, transparent 40%, rgba(77,145,232,.08) 100%),
+    var(--navy-card);
+  border-right: 1px solid var(--navy-border);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.panel-left::before {
+  content: '';
+  position: absolute; top: -80px; left: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(201,169,110,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.panel-left::after {
+  content: '';
+  position: absolute; bottom: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(77,145,232,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* emblem */
+.emblem {
+  position: relative; width: 130px; height: 130px;
+  margin: 0 auto 1.8rem;
+}
+.emblem-ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201,169,110,.35);
+  animation: ring-pulse 3s ease-in-out infinite;
+}
+.emblem-ring-2 {
+  position: absolute; inset: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,169,110,.2);
+  animation: ring-pulse 3s ease-in-out infinite .5s;
+}
+@keyframes ring-pulse {
+  0%, 100% { opacity: .6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+.emblem-inner {
+  position: absolute; inset: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(201,169,110,.2), rgba(201,169,110,.06));
+  border: 1px solid rgba(201,169,110,.4);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+}
+.emblem-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--gold-mid);
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+.emblem-anos {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .62rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--gold);
+  margin-top: .1rem;
+}
+
+.left-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem; font-weight: 400;
+  color: var(--deep);
+  line-height: 1.1;
+  margin-bottom: .5rem;
+}
+.left-name em { font-style: italic; color: var(--gold-mid); }
+
+.left-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem; color: var(--muted);
+  letter-spacing: .04em;
+  margin-bottom: 2rem;
+}
+
+.left-divider {
+  display: flex; align-items: center; gap: .8rem;
+  width: 100%; max-width: 200px; margin: 0 auto 1.6rem;
+}
+.left-divider::before, .left-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,.4));
+}
+.left-divider::after { background: linear-gradient(90deg, rgba(201,169,110,.4), transparent); }
+.left-divider span { color: var(--gold); font-size: .75rem; }
+
+.left-features {
+  display: flex; flex-direction: column; gap: .55rem;
+  width: 100%; max-width: 220px;
+}
+.left-feat {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .78rem; color: var(--muted); text-align: left;
+}
+.feat-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0; opacity: .7;
+}
+
+/* ── RIGHT PANEL ───────────────────────────── */
+.panel-right {
+  width: min(380px, 100%);
+  background: var(--navy-mid);
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+}
+
+.right-header { margin-bottom: 2rem; }
+.right-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; color: var(--deep);
+  margin-bottom: .3rem;
+}
+.right-sub {
+  font-size: .82rem; color: var(--muted);
+}
+
+/* form fields */
+.field { margin-bottom: 1.1rem; }
+.field-label {
+  display: block; font-size: .73rem;
+  color: var(--muted); text-transform: uppercase;
+  letter-spacing: .09em; margin-bottom: .45rem;
+}
+.field-wrap {
+  position: relative;
+}
+.field-icon {
+  position: absolute; left: .9rem; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: .9rem; pointer-events: none;
+  display: flex; align-items: center;
+}
+.inp {
+  width: 100%; padding: .72rem 1rem .72rem 2.6rem;
+  border: 1.5px solid var(--navy-border);
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: .88rem;
+  background: rgba(255,255,255,.04); color: var(--deep);
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.inp::placeholder { color: var(--muted); }
+.inp:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,169,110,.1);
+}
+.inp.no-icon { padding-left: 1rem; }
+.inp.has-toggle { padding-right: 2.8rem; }
+
+.toggle-pw {
+  position: absolute; right: .85rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: .85rem;
+  display: flex; align-items: center;
+  transition: color .2s;
+}
+.toggle-pw:hover { color: var(--gold); }
+
+/* submit */
+.btn-submit {
+  width: 100%; padding: .82rem;
+  background: linear-gradient(135deg, var(--gold), #b8923a);
+  color: var(--navy); border: none; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600;
+  cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+  margin-top: .4rem;
+  letter-spacing: .02em;
+}
+.btn-submit::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), transparent);
+  opacity: 0; transition: opacity .2s;
+}
+.btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,169,110,.35); }
+.btn-submit:hover::after { opacity: 1; }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-submit .spinner {
+  display: none; width: 18px; height: 18px;
+  border: 2px solid rgba(6,15,30,.3);
+  border-top-color: var(--navy);
+  border-radius: 50%;
+  animation: spin .7s linear infinite; margin: 0 auto;
+}
+.btn-submit.loading .btn-text { display: none; }
+.btn-submit.loading .spinner { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* helpers */
+.helper-row {
+  display: flex; justify-content: flex-end;
+  margin-top: .3rem; margin-bottom: 1rem;
+}
+.link-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: .78rem;
+  color: var(--muted); transition: color .2s; padding: 0;
+}
+.link-btn:hover { color: var(--gold); }
+
+/* messages */
+.msg {
+  border-radius: 10px; padding: .65rem .9rem;
+  font-size: .82rem; margin-bottom: 1rem;
+  display: none;
+}
+.msg.show { display: block; }
+.msg-error {
+  background: rgba(248,113,113,.1);
+  border: 1px solid rgba(248,113,113,.3);
+  color: var(--red);
+}
+.msg-success {
+  background: rgba(74,222,128,.08);
+  border: 1px solid rgba(74,222,128,.2);
+  color: var(--green);
+}
+
+/* reset form */
+#form-reset { display: none; }
+.back-btn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: .8rem;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 1.4rem; padding: 0;
+  transition: color .2s;
+}
+.back-btn:hover { color: var(--gold); }
+
+/* footer */
+.right-footer {
+  margin-top: 2rem; padding-top: 1.4rem;
+  border-top: 1px solid var(--navy-border);
+  font-size: .72rem; color: var(--muted);
+  text-align: center; line-height: 1.5;
+}
+
+/* responsive */
+@media (max-width: 620px) {
+  .panel-left { display: none; }
+  .panel-right { width: 100%; padding: 2.5rem 1.8rem; border-radius: 0; }
+  .login-shell { border-radius: 20px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="login-shell">
+
+  <!-- LEFT -->
+  <div class="panel-left">
+    <div class="emblem">
+      <div class="emblem-ring"></div>
+      <div class="emblem-ring-2"></div>
+      <div class="emblem-inner">
+        <span class="emblem-num">15</span>
+        <span class="emblem-anos">Anos</span>
+      </div>
+    </div>
+
+    <h1 class="left-name">15 Anos de<br><em>Eloisa</em></h1>
+    <p class="left-tagline">Plataforma de Organização da Festa</p>
+
+    <div class="left-divider"><span>✦</span></div>
+
+    <div class="left-features">
+      <div class="left-feat"><div class="feat-dot"></div>Gestão de convidados e RSVP</div>
+      <div class="left-feat"><div class="feat-dot"></div>Lista de presentes interativa</div>
+      <div class="left-feat"><div class="feat-dot"></div>Orçamento e fornecedores</div>
+      <div class="left-feat"><div class="feat-dot"></div>Galeria com Supabase Storage</div>
+      <div class="left-feat"><div class="feat-dot"></div>Convite digital personalizado</div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel-right">
+
+    <!-- LOGIN -->
+    <div id="form-login">
+      <div class="right-header">
+        <h2 class="right-title">Bem-vinda 👋</h2>
+        <p class="right-sub">Entre com seu e-mail e senha para acessar o painel.</p>
+      </div>
+
+      <div class="msg msg-error" id="login-err"></div>
+
+      <div class="field">
+        <label class="field-label">E-mail</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input class="inp" type="email" id="email"
+            placeholder="seu@email.com" autocomplete="email">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Senha</label>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input class="inp has-toggle" type="password" id="senha"
+            placeholder="••••••••" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')login()">
+          <button class="toggle-pw" onclick="togglePw()" type="button">👁️</button>
+        </div>
+      </div>
+
+      <div class="helper-row">
+        <button class="link-btn" onclick="showReset()">Esqueci minha senha</button>
+      </div>
+
+      <button class="btn-submit" id="btn-login" onclick="login()">
+        <span class="btn-text">Entrar no Painel</span>
+        <div class="spinner"></div>
+      </button>
+
+      <div class="right-footer">
+        Acesso restrito à equipe organizadora.<br>
+        Problemas? Fale com a administradora do sistema.
+      </div>
+    </div>
+
+    <!-- RESET -->
+    <div id="form-reset">
+      <button class="back-btn" onclick="showLogin()">← Voltar ao login</button>
+      <div class="right-header">
+        <h2 class="right-title">Recuperar acesso</h2>
+        <p class="right-sub">Enviaremos um link para você criar uma nova senha.</p>
+      </div>
+
+      <div class="msg msg-error"   id="reset-err"></div>
+      <div class="msg msg-success" id="reset-ok"></div>
+
+      <div class="field">
+        <label class="field-label">Seu e-mail cadastrado</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input class="inp" type="email" id="reset-email"
+            placeholder="seu@email.com" onkeydown="if(event.key==='Enter')sendReset()">
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btn-reset" onclick="sendReset()">
+        <span class="btn-text">Enviar link de recuperação</span>
+        <div class="spinner"></div>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── SUPABASE ─────────────────────────────────
+const SUPABASE_URL      = "https://tspjdgzrjaqooyrnudcr.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWH0JyIJa5eIHtTw_bdm-1krT";
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Sessão ativa → redireciona
+_sb.auth.getSession().then(({data:{session}})=>{ if(session) location.href='index.html'; });
+
+// ── CANVAS PARTICLES ─────────────────────────
+(function(){
+  const c = document.getElementById('bg');
+  const ctx = c.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  class P {
+    constructor(){
+      this.x = Math.random()*W;
+      this.y = Math.random()*H;
+      this.r = Math.random()*1.5+.3;
+      this.a = Math.random()*Math.PI*2;
+      this.s = (Math.random()*.3+.05)*( Math.random()<.5?1:-1 );
+      this.vx= Math.cos(this.a)*this.s;
+      this.vy= Math.sin(this.a)*this.s;
+      this.life = Math.random();
+      this.max  = .5+Math.random()*.5;
+    }
+    update(){
+      this.x+=this.vx; this.y+=this.vy;
+      this.life+=.004;
+      if(this.life>this.max) this.life=0;
+      if(this.x<0||this.x>W||this.y<0||this.y>H){ this.x=Math.random()*W; this.y=Math.random()*H; }
+    }
+    draw(){
+      const op = Math.sin((this.life/this.max)*Math.PI)*0.4;
+      ctx.beginPath();
+      ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(201,169,110,${op})`;
+      ctx.fill();
+    }
+  }
+
+  for(let i=0;i<90;i++) particles.push(new P());
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{p.update();p.draw();});
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ── HELPERS ──────────────────────────────────
+function setLoading(id, on){
+  const btn=document.getElementById(id);
+  btn.classList.toggle('loading',on); btn.disabled=on;
+}
+function showErr(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function hideErr(id){ document.getElementById(id).classList.remove('show'); }
+function showOk(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+
+function togglePw(){
+  const inp=document.getElementById('senha');
+  inp.type=inp.type==='password'?'text':'password';
+}
+
+// ── AUTH ─────────────────────────────────────
+async function login(){
+  const email=document.getElementById('email').value.trim();
+  const senha=document.getElementById('senha').value;
+  hideErr('login-err');
+  if(!email||!senha){ showErr('login-err','Preencha e-mail e senha.'); return; }
+  setLoading('btn-login',true);
+  const {error}=await _sb.auth.signInWithPassword({email,password:senha});
+  setLoading('btn-login',false);
+  if(error){
+    const map={
+      'Invalid login credentials':'E-mail ou senha incorretos.',
+      'Email not confirmed':'Confirme seu e-mail antes de entrar.',
+      'Too many requests':'Muitas tentativas. Aguarde alguns minutos.',
+    };
+    showErr('login-err', map[error.message]||'Erro ao entrar. Tente novamente.');
+  } else { location.href='index.html'; }
+}
+
+async function sendReset(){
+  const email=document.getElementById('reset-email').value.trim();
+  hideErr('reset-err');
+  if(!email){ showErr('reset-err','Informe seu e-mail.'); return; }
+  setLoading('btn-reset',true);
+  const {error}=await _sb.auth.resetPasswordForEmail(email,{
+    redirectTo: location.origin+'/index.html'
+  });
+  setLoading('btn-reset',false);
+  if(error){ showErr('reset-err',error.message); }
+  else { showOk('reset-ok','✓ Link enviado! Verifique sua caixa de entrada.'); }
+}
+
+function showReset(){
+  document.getElementById('form-login').style.display='none';
+  document.getElementById('form-reset').style.display='block';
+}
+function showLogin(){
+  document.getElementById('form-reset').style.display='none';
+  document.getElementById('form-login').style.display='block';
+  hideErr('login-err');
+}
+</script>
+</body>
+</html>

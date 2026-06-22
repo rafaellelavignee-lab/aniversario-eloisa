@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Convite — 15 Anos da Eloisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy-mid:#0f2044;--navy-light:#1a3560;--navy-border:#1e3d6e;
+  --gold:#c9a96e;--gold-light:#f0deb4;--accent:#4d91e8;
+  --deep:#e8f0fd;--text:#c8d8f0;--muted:#6a8ab8;
+  --green:#4ade80;--red:#f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%,rgba(77,145,232,.1) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 70% at 85% 90%,rgba(201,169,110,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(77,145,232,.04) 0%,transparent 70%);
+}
+
+/* HERO */
+.hero{
+  position:relative;z-index:1;
+  text-align:center;padding:4rem 2rem 3rem;
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.hero-crown{font-size:4rem;display:block;animation:float 3s ease-in-out infinite;margin-bottom:1rem}
+@keyframes float{0%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-12px) rotate(8deg)}100%{transform:translateY(0) rotate(-8deg)}}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.5rem,8vw,5rem);
+  color:var(--deep);letter-spacing:-.02em;line-height:1.05;
+  margin-bottom:.6rem;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1rem,3vw,1.3rem);color:var(--muted);
+  margin-bottom:2rem;letter-spacing:.05em;
+}
+.hero-msg{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,2.5vw,1.2rem);color:var(--text);
+  max-width:500px;line-height:1.7;margin:0 auto 2.5rem;
+  font-style:italic;
+}
+.divider{display:flex;align-items:center;gap:1rem;margin:1.5rem auto;max-width:260px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.divider::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.divider span{color:var(--gold)}
+.hero-btns{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
+.btn-primary{
+  padding:.8rem 1.8rem;background:linear-gradient(135deg,var(--gold),#b8923a);
+  color:var(--navy);border:none;border-radius:100px;
+  font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:600;
+  cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;
+  box-shadow:0 4px 15px rgba(201,169,110,.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,169,110,.4)}
+.btn-secondary{
+  padding:.8rem 1.8rem;background:none;
+  border:1.5px solid var(--navy-border);color:var(--text);
+  border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.92rem;
+  cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+
+/* SECTIONS */
+.section{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+.sec-title{
+  font-family:'Playfair Display',serif;font-size:1.6rem;
+  color:var(--deep);text-align:center;margin-bottom:.4rem;
+}
+.sec-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:1.8rem}
+
+/* COUNTDOWN */
+.countdown-section{
+  padding:2rem;background:linear-gradient(135deg,rgba(201,169,110,.12),rgba(77,145,232,.08));
+  border:1px solid rgba(201,169,110,.25);border-radius:24px;text-align:center;margin-bottom:2rem;
+}
+.cdown-title{
+  font-family:'Playfair Display',serif;font-size:.82rem;color:var(--gold);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;
+}
+.cdown-boxes{display:flex;justify-content:center;gap:1.8rem;flex-wrap:wrap}
+.cdown-box{text-align:center}
+.cdown-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--gold-light);line-height:1}
+.cdown-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+.cdown-sep{font-size:1.5rem;color:var(--gold);align-self:center;opacity:.35}
+
+/* EVENT DETAILS */
+.details-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.detail-card{
+  background:rgba(15,32,68,.9);border:1px solid var(--navy-border);border-radius:18px;
+  padding:1.2rem;text-align:center;
+}
+.detail-icon{font-size:1.8rem;margin-bottom:.6rem}
+.detail-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.detail-value{font-family:'Playfair Display',serif;font-size:1rem;color:var(--deep)}
+
+/* GIFTS */
+.gifts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem}
+.gift-card{
+  background:rgba(15,32,68,.9);border:1px solid var(--navy-border);
+  border-radius:16px;overflow:hidden;transition:transform .3s;
+}
+.gift-card:hover{transform:translateY(-3px)}
+.gift-img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--navy-light)}
+.gift-no-img{width:100%;aspect-ratio:1;background:var(--navy-light);display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.gift-body{padding:.9rem}
+.gift-name{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--deep);margin-bottom:.3rem}
+.gift-desc{font-size:.77rem;color:var(--muted);margin-bottom:.7rem;line-height:1.4}
+.gift-reserved{
+  background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);
+  color:var(--green);border-radius:8px;padding:.4rem;font-size:.75rem;text-align:center;
+}
+.btn-reserve{
+  width:100%;padding:.5rem;background:linear-gradient(135deg,var(--gold),#b8923a);
+  color:var(--navy);border:none;border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;
+  cursor:pointer;transition:all .2s;margin-top:.4rem;
+}
+.btn-reserve:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(201,169,110,.3)}
+.btn-link{
+  width:100%;padding:.4rem;background:none;border:1.5px solid var(--navy-border);
+  border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;
+  font-size:.78rem;cursor:pointer;text-decoration:none;display:block;
+  text-align:center;transition:all .2s;margin-bottom:.4rem;
+}
+.btn-link:hover{border-color:var(--accent);color:var(--accent)}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem}
+.gallery-thumb{aspect-ratio:1;border-radius:12px;overflow:hidden;cursor:pointer}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.gallery-thumb:hover img{transform:scale(1.07)}
+
+/* PLAYLIST */
+.playlist-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.playlist-card{
+  background:rgba(15,32,68,.9);border:1px solid var(--navy-border);border-radius:16px;
+  padding:1.2rem;text-align:center;
+}
+.pl-icon{font-size:2rem;margin-bottom:.5rem}
+.pl-name{font-size:.8rem;color:var(--muted);margin-bottom:.8rem;text-transform:uppercase;letter-spacing:.07em}
+.pl-btn{
+  padding:.5rem 1.2rem;background:none;border:1.5px solid var(--navy-border);
+  border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:.82rem;cursor:pointer;text-decoration:none;display:inline-block;
+  transition:all .2s;
+}
+.pl-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pl-btn.disabled{opacity:.4;cursor:default;pointer-events:none}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;text-align:center;
+  padding:3rem 1.5rem 4rem;border-top:1px solid var(--navy-border);
+  color:var(--muted);font-size:.82rem;
+}
+footer .crown{font-size:1.5rem;display:block;margin-bottom:.5rem}
+footer strong{color:var(--gold)}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:300;display:none;align-items:center;justify-content:center;cursor:pointer}
+#lightbox.open{display:flex}
+#lightbox img{max-width:92vw;max-height:90vh;border-radius:12px}
+#lightbox-close{position:fixed;top:1.5rem;right:1.5rem;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none;line-height:1}
+
+/* ALERT */
+.toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:400;
+  background:var(--navy-mid);border:1px solid var(--navy-border);color:var(--gold-light);
+  padding:.7rem 1.3rem;border-radius:100px;font-size:.82rem;
+  opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* RSVP BADGE */
+.rsvp-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);
+  color:var(--green);border-radius:100px;padding:.4rem 1rem;
+  font-size:.82rem;margin:1rem auto;
+}
+.empty-msg{text-align:center;color:var(--muted);font-style:italic;padding:1.5rem;grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-crown">🦋</span>
+  <h1>15 Anos de <em>Eloisa</em></h1>
+  <p class="hero-sub">Uma noite especial para celebrar você</p>
+  <div class="divider"><span>✦</span></div>
+  <p class="hero-msg" id="hero-msg">
+    Você está convidado(a) para celebrar os 15 anos de uma pessoa muito especial.
+    Será uma noite inesquecível, repleta de alegria e carinho.
+  </p>
+  <div class="hero-btns">
+    <a href="#" id="btn-rsvp" class="btn-primary">🎉 Confirmar Presença</a>
+    <a href="#presentes" class="btn-secondary">🎁 Ver Presentes</a>
+  </div>
+  <div id="rsvp-status"></div>
+</div>
+
+<!-- EVENT DETAILS -->
+<div class="section">
+  <p class="sec-title">✨ A Festa</p>
+  <p class="sec-sub">Detalhes do grande dia</p>
+  <div class="details-grid" id="details-grid">
+    <div class="detail-card"><div class="detail-icon">📅</div><div class="detail-label">Data</div><div class="detail-value" id="det-data">—</div></div>
+    <div class="detail-card"><div class="detail-icon">⏰</div><div class="detail-label">Horário</div><div class="detail-value" id="det-hora">—</div></div>
+    <div class="detail-card"><div class="detail-icon">📍</div><div class="detail-label">Local</div><div class="detail-value" id="det-local">—</div></div>
+    <div class="detail-card"><div class="detail-icon">✨</div><div class="detail-label">Tema</div><div class="detail-value" id="det-tema">—</div></div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-section">
+    <div class="cdown-title">🕐 Faltam...</div>
+    <div id="countdown-content"><p style="color:var(--muted);font-size:.85rem">Aguardando data da festa...</p></div>
+  </div>
+</div>
+
+<!-- PRESENTES -->
+<div class="section" id="presentes">
+  <p class="sec-title">🎁 Sugestões de Presentes</p>
+  <p class="sec-sub">Ideias para presentear a Eloisa</p>
+  <div class="gifts-grid" id="gifts-grid">
+    <p class="empty-msg">Carregando presentes...</p>
+  </div>
+</div>
+
+<!-- GALERIA -->
+<div class="section" id="galeria" style="display:none">
+  <p class="sec-title">📸 Galeria</p>
+  <p class="sec-sub">Momentos especiais</p>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</div>
+
+<!-- PLAYLIST -->
+<div class="section" id="playlist-section" style="display:none">
+  <p class="sec-title">🎵 Playlist da Festa</p>
+  <p class="sec-sub">A trilha sonora desta noite especial</p>
+  <div class="playlist-cards" id="playlist-cards"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="crown">🦋</span>
+  Com muito amor e alegria, a família de <strong>Eloisa</strong> aguarda você.
+</footer>
+
+<!-- MODAL RESERVAR -->
+<div id="modal-reserva" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center">
+  <div style="background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;padding:2rem;max-width:360px;width:90%">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--deep);margin-bottom:1rem">🎁 Reservar Presente</h2>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Como você quer ser identificado?</p>
+    <input id="reserva-nome" style="width:100%;padding:.65rem 1rem;border:1.5px solid var(--navy-border);border-radius:12px;background:rgba(255,255,255,.05);color:var(--deep);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;margin-bottom:1rem" placeholder="Seu nome (opcional)">
+    <div style="display:flex;gap:.7rem">
+      <button onclick="cancelReserva()" style="flex:1;padding:.65rem;background:none;border:1.5px solid var(--navy-border);border-radius:12px;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif">Cancelar</button>
+      <button onclick="confirmarReserva()" style="flex:1;padding:.65rem;background:linear-gradient(135deg,var(--gold),#b8923a);color:var(--navy);border:none;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Reservar 🎁</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL      = "https://tspjdgzrjaqooyrnudcr.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_56hrZmBWH0JyIJa5eIHtTw_bdm-1krT";
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let token = null;
+let guestData = null;
+let pendingReservaId = null;
+let configData = {};
+
+// UTILS
+function toast(msg) {
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(window._t);window._t=setTimeout(()=>el.classList.remove('show'),3000);
+}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function p(n){ return String(n).padStart(2,'0') }
+
+// INIT
+async function init() {
+  const params = new URLSearchParams(location.search);
+  token = params.get('token');
+
+  // Load config
+  const { data:cfg } = await _sb.from('configuracoes').select('*').eq('id',1).single();
+  if (cfg) {
+    configData = cfg;
+    if (cfg.data_festa) {
+      const d = new Date(cfg.data_festa+'T12:00:00');
+      document.getElementById('det-data').textContent = d.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
+    }
+    document.getElementById('det-hora').textContent  = cfg.horario||'A confirmar';
+    document.getElementById('det-local').textContent = cfg.local_festa||'A confirmar';
+    document.getElementById('det-tema').textContent  = cfg.tema||'A confirmar';
+    if (cfg.mensagem_especial) document.getElementById('hero-msg').textContent = cfg.mensagem_especial;
+    setInterval(updateCountdown,1000);
+    updateCountdown();
+  }
+
+  // Set RSVP link
+  if (token) {
+    document.getElementById('btn-rsvp').href = `rsvp.html?token=${token}`;
+
+    // Load guest + check RSVP status
+    const { data: guest } = await _sb.from('convidados').select('*').eq('token_rsvp',token).single();
+    if (guest) {
+      guestData = guest;
+      if (guest.resposta_rsvp === 'confirmado') {
+        document.getElementById('rsvp-status').innerHTML = `<div class="rsvp-badge">✅ Presença confirmada, ${esc(guest.nome)}!</div>`;
+      }
+    }
+  }
+
+  // Load gifts
+  const { data: gifts } = await _sb.from('presentes').select('*').order('criado_em');
+  renderGifts(gifts||[]);
+
+  // Load public photos
+  const { data: fotos } = await _sb.from('fotos').select('*').eq('visibilidade','public').order('criado_em',{ascending:false}).limit(24);
+  if (fotos?.length) {
+    document.getElementById('galeria').style.display='';
+    renderGallery(fotos);
+  }
+
+  // Load playlist
+  const { data: pl } = await _sb.from('playlist').select('*').eq('id',1).single();
+  if (pl && (pl.spotify||pl.youtube||pl.deezer)) {
+    document.getElementById('playlist-section').style.display='';
+    renderPlaylist(pl);
+  }
+}
+
+function updateCountdown() {
+  const el = document.getElementById('countdown-content');
+  if (!el||!configData.data_festa) return;
+  const [y,m,d] = configData.data_festa.split('-').map(Number);
+  const fest = new Date(y,m-1,d,12,0,0);
+  const diff = fest - new Date();
+  if (diff<=0) { el.innerHTML='<p class="cdown-msg" style="font-family:Playfair Display,serif;font-size:1.3rem;color:var(--gold-light);font-style:italic">🎉 A festa chegou! Parabéns, Eloisa!</p>'; return; }
+  const s=Math.floor(diff/1000),min=Math.floor(s/60),hr=Math.floor(min/60),days=Math.floor(hr/24);
+  el.innerHTML=`<div class="cdown-boxes">
+    <div class="cdown-box"><div class="cdown-num">${p(Math.floor(days/30))}</div><div class="cdown-lbl">Meses</div></div>
+    <div class="cdown-sep">·</div>
+    <div class="cdown-box"><div class="cdown-num">${p(days%30)}</div><div class="cdown-lbl">Dias</div></div>
+    <div class="cdown-sep">·</div>
+    <div class="cdown-box"><div class="cdown-num">${p(hr%24)}</div><div class="cdown-lbl">Horas</div></div>
+    <div class="cdown-sep">·</div>
+    <div class="cdown-box"><div class="cdown-num">${p(min%60)}</div><div class="cdown-lbl">Min</div></div>
+    <div class="cdown-sep">·</div>
+    <div class="cdown-box"><div class="cdown-num">${p(s%60)}</div><div class="cdown-lbl">Seg</div></div>
+  </div>`;
+}
+
+function renderGifts(list) {
+  const grid = document.getElementById('gifts-grid');
+  if (!list.length) { grid.innerHTML='<p class="empty-msg">Nenhuma sugestão de presente por enquanto.</p>'; return; }
+  grid.innerHTML = list.map(p=>{
+    const img = p.imagem_url
+      ? `<img src="${esc(p.imagem_url)}" class="gift-img" alt="" loading="lazy">`
+      : `<div class="gift-no-img">🎁</div>`;
+    const action = p.reservado
+      ? `<div class="gift-reserved">✅ Presente já escolhido</div>`
+      : `<button class="btn-reserve" onclick="openReserva('${p.id}')">🎁 Vou presentear!</button>`;
+    const link = p.link_compra
+      ? `<a href="${esc(p.link_compra)}" target="_blank" rel="noopener" class="btn-link">Ver produto ↗</a>` : '';
+    return `<div class="gift-card">
+      ${img}
+      <div class="gift-body">
+        <div class="gift-name">${esc(p.nome)}</div>
+        ${p.descricao?`<div class="gift-desc">${esc(p.descricao)}</div>`:''}
+        ${link}
+        ${action}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderGallery(list) {
+  document.getElementById('gallery-grid').innerHTML = list.map(f=>`
+    <div class="gallery-thumb" onclick="openLightbox('${esc(f.url)}')">
+      <img src="${esc(f.url)}" alt="${esc(f.titulo||'')}" loading="lazy">
+    </div>`).join('');
+}
+
+function renderPlaylist(pl) {
+  const items=[
+    { icon:'💚',name:'Spotify',  url:pl.spotify  },
+    { icon:'❤️', name:'YouTube', url:pl.youtube  },
+    { icon:'🟠', name:'Deezer',  url:pl.deezer   }
+  ].filter(i=>i.url);
+  document.getElementById('playlist-cards').innerHTML=items.map(i=>`
+    <div class="playlist-card">
+      <div class="pl-icon">${i.icon}</div>
+      <div class="pl-name">${i.name}</div>
+      <a href="${esc(i.url)}" target="_blank" rel="noopener" class="pl-btn">Ouvir agora ↗</a>
+    </div>`).join('');
+}
+
+// RESERVA
+function openReserva(id) {
+  pendingReservaId=id;
+  const modal=document.getElementById('modal-reserva');
+  modal.style.display='flex';
+}
+function cancelReserva() {
+  document.getElementById('modal-reserva').style.display='none';
+  pendingReservaId=null;
+}
+async function confirmarReserva() {
+  const nome=document.getElementById('reserva-nome').value.trim()||'Convidado';
+  const { data,error }=await _sb.rpc('reservar_presente',{p_id:pendingReservaId,p_nome:nome});
+  cancelReserva();
+  if(error||!data){toast('Não foi possível reservar — talvez já reservado.');return;}
+  toast('🎁 Presente reservado com sucesso!');
+  const { data:gifts }=await _sb.from('presentes').select('*').order('criado_em');
+  renderGifts(gifts||[]);
+}
+
+// LIGHTBOX
+function openLightbox(url){document.getElementById('lightbox-img').src=url;document.getElementById('lightbox').classList.add('open')}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
+
+init();
+</script>
+</body>
+</html>
