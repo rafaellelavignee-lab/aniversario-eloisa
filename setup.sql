@@ -254,6 +254,17 @@ VALUES
   ('presentes',       'presentes',       true,  3145728, ARRAY['image/jpeg','image/png','image/webp'])
 ON CONFLICT (id) DO NOTHING;
 
+-- Limpa políticas antigas de Storage antes de recriar
+DROP POLICY IF EXISTS "fps_read"   ON storage.objects;
+DROP POLICY IF EXISTS "fps_write"  ON storage.objects;
+DROP POLICY IF EXISTS "fps_delete" ON storage.objects;
+DROP POLICY IF EXISTS "fpr_read"   ON storage.objects;
+DROP POLICY IF EXISTS "fpr_write"  ON storage.objects;
+DROP POLICY IF EXISTS "fpr_delete" ON storage.objects;
+DROP POLICY IF EXISTS "pre_read"   ON storage.objects;
+DROP POLICY IF EXISTS "pre_write"  ON storage.objects;
+DROP POLICY IF EXISTS "pre_delete" ON storage.objects;
+
 -- fotos-publicas
 CREATE POLICY "fps_read"   ON storage.objects FOR SELECT USING (bucket_id='fotos-publicas');
 CREATE POLICY "fps_write"  ON storage.objects FOR INSERT WITH CHECK (bucket_id='fotos-publicas' AND auth.uid() IS NOT NULL);
