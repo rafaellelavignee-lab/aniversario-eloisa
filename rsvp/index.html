@@ -260,7 +260,7 @@ body::before{
   <!-- BRAND -->
   <div class="brand">
     <span class="brand-crown">🦋</span>
-    <p class="brand-title">15 Anos de <em>Eloisa</em></p>
+    <p class="brand-title"><span id="brand-idade">15</span> Anos de <em id="brand-nome">Eloisa</em></p>
     <p class="brand-sub">Confirmação de Presença</p>
   </div>
 
@@ -407,6 +407,8 @@ async function init() {
   if (error || !guest) { show('error'); return; }
   guestData  = guest;
   configData = cfg || {};
+  if (configData.nome_aniversariante) document.getElementById('brand-nome').textContent = configData.nome_aniversariante;
+  if (configData.idade_aniversariante) document.getElementById('brand-idade').textContent = configData.idade_aniversariante;
 
   // Monta info do evento
   const eventHtml = buildEventHtml();

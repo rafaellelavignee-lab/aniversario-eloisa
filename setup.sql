@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS configuracoes (
   atualizado_em      TIMESTAMPTZ  DEFAULT NOW()
 );
 INSERT INTO configuracoes (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
+-- Dados do aniversariante (adicionados posteriormente — seguros de rodar de novo)
+ALTER TABLE configuracoes ADD COLUMN IF NOT EXISTS nome_aniversariante  TEXT;
+ALTER TABLE configuracoes ADD COLUMN IF NOT EXISTS idade_aniversariante INTEGER;
 
 -- 2. Perfis de usuários (espelho do Supabase Auth)
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -198,21 +201,21 @@ DO $$ DECLARE r RECORD; BEGIN
   END LOOP;
 END $$;
 
--- CONFIGURACOES: público lê, admin escreve
+-- CONFIGURACOES: público lê, qualquer usuário autenticado escreve
 CREATE POLICY "cfg_read"  ON configuracoes FOR SELECT USING (true);
-CREATE POLICY "cfg_write" ON configuracoes FOR ALL    USING (get_user_tipo(auth.uid())='admin');
+CREATE POLICY "cfg_write" ON configuracoes FOR ALL    USING (auth.uid() IS NOT NULL);
 
--- USUARIOS: autenticados leem, admin gerencia
+-- USUARIOS: autenticados leem; só admin cria/altera/remove acessos
 CREATE POLICY "usr_read"   ON usuarios FOR SELECT USING (auth.uid() IS NOT NULL);
 CREATE POLICY "usr_insert" ON usuarios FOR INSERT WITH CHECK (get_user_tipo(auth.uid())='admin');
 CREATE POLICY "usr_update" ON usuarios FOR UPDATE USING (get_user_tipo(auth.uid())='admin');
 CREATE POLICY "usr_delete" ON usuarios FOR DELETE USING (get_user_tipo(auth.uid())='admin');
 
--- CONVIDADOS: autenticados gerenciam; RPC pública lida via função SECURITY DEFINER
+-- CONVIDADOS: qualquer autenticado gerencia tudo; RPC pública lida via função SECURITY DEFINER
 CREATE POLICY "cnv_read"   ON convidados FOR SELECT USING (auth.uid() IS NOT NULL);
 CREATE POLICY "cnv_insert" ON convidados FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 CREATE POLICY "cnv_update" ON convidados FOR UPDATE USING (auth.uid() IS NOT NULL);
-CREATE POLICY "cnv_delete" ON convidados FOR DELETE USING (get_user_tipo(auth.uid())='admin');
+CREATE POLICY "cnv_delete" ON convidados FOR DELETE USING (auth.uid() IS NOT NULL);
 -- Leitura pública por token (para rsvp.html e convite.html)
 CREATE POLICY "cnv_token_read" ON convidados FOR SELECT USING (token_rsvp IS NOT NULL);
 
@@ -222,17 +225,17 @@ CREATE POLICY "ckl_all" ON checklists FOR ALL USING (auth.uid() IS NOT NULL);
 -- ORCAMENTOS: apenas autenticados
 CREATE POLICY "orc_all" ON orcamentos FOR ALL USING (auth.uid() IS NOT NULL);
 
--- PRESENTES: público lê, admin escreve (reserva via RPC)
+-- PRESENTES: público lê, qualquer autenticado gerencia (reserva via RPC)
 CREATE POLICY "prs_read"   ON presentes FOR SELECT USING (true);
-CREATE POLICY "prs_insert" ON presentes FOR INSERT WITH CHECK (get_user_tipo(auth.uid())='admin');
-CREATE POLICY "prs_update" ON presentes FOR UPDATE USING (get_user_tipo(auth.uid())='admin');
-CREATE POLICY "prs_delete" ON presentes FOR DELETE USING (get_user_tipo(auth.uid())='admin');
+CREATE POLICY "prs_insert" ON presentes FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "prs_update" ON presentes FOR UPDATE USING (auth.uid() IS NOT NULL);
+CREATE POLICY "prs_delete" ON presentes FOR DELETE USING (auth.uid() IS NOT NULL);
 
--- FOTOS: público vê públicas; autenticados veem tudo
+-- FOTOS: público vê públicas; qualquer autenticado gerencia tudo
 CREATE POLICY "fot_read"   ON fotos FOR SELECT USING (visibilidade='public' OR auth.uid() IS NOT NULL);
 CREATE POLICY "fot_insert" ON fotos FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY "fot_update" ON fotos FOR UPDATE USING (get_user_tipo(auth.uid())='admin');
-CREATE POLICY "fot_delete" ON fotos FOR DELETE USING (get_user_tipo(auth.uid())='admin');
+CREATE POLICY "fot_update" ON fotos FOR UPDATE USING (auth.uid() IS NOT NULL);
+CREATE POLICY "fot_delete" ON fotos FOR DELETE USING (auth.uid() IS NOT NULL);
 
 -- NOTAS e PLAYLIST: autenticados escrevem, público lê playlist
 CREATE POLICY "not_all"     ON notas    FOR ALL    USING (auth.uid() IS NOT NULL);
@@ -254,14 +257,14 @@ ON CONFLICT (id) DO NOTHING;
 -- fotos-publicas
 CREATE POLICY "fps_read"   ON storage.objects FOR SELECT USING (bucket_id='fotos-publicas');
 CREATE POLICY "fps_write"  ON storage.objects FOR INSERT WITH CHECK (bucket_id='fotos-publicas' AND auth.uid() IS NOT NULL);
-CREATE POLICY "fps_delete" ON storage.objects FOR DELETE USING (bucket_id='fotos-publicas' AND get_user_tipo(auth.uid())='admin');
+CREATE POLICY "fps_delete" ON storage.objects FOR DELETE USING (bucket_id='fotos-publicas' AND auth.uid() IS NOT NULL);
 
 -- fotos-privadas
 CREATE POLICY "fpr_read"   ON storage.objects FOR SELECT USING (bucket_id='fotos-privadas' AND auth.uid() IS NOT NULL);
 CREATE POLICY "fpr_write"  ON storage.objects FOR INSERT WITH CHECK (bucket_id='fotos-privadas' AND auth.uid() IS NOT NULL);
-CREATE POLICY "fpr_delete" ON storage.objects FOR DELETE USING (bucket_id='fotos-privadas' AND get_user_tipo(auth.uid())='admin');
+CREATE POLICY "fpr_delete" ON storage.objects FOR DELETE USING (bucket_id='fotos-privadas' AND auth.uid() IS NOT NULL);
 
 -- presentes
 CREATE POLICY "pre_read"   ON storage.objects FOR SELECT USING (bucket_id='presentes');
-CREATE POLICY "pre_write"  ON storage.objects FOR INSERT WITH CHECK (bucket_id='presentes' AND get_user_tipo(auth.uid())='admin');
-CREATE POLICY "pre_delete" ON storage.objects FOR DELETE USING (bucket_id='presentes' AND get_user_tipo(auth.uid())='admin');
+CREATE POLICY "pre_write"  ON storage.objects FOR INSERT WITH CHECK (bucket_id='presentes' AND auth.uid() IS NOT NULL);
+CREATE POLICY "pre_delete" ON storage.objects FOR DELETE USING (bucket_id='presentes' AND auth.uid() IS NOT NULL);

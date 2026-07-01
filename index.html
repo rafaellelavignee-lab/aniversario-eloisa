@@ -523,7 +523,7 @@ nav{
         <h2 class="sec-title">🎁 Presentes</h2>
         <p class="sec-sub">Sugestões para os convidados</p>
       </div>
-      <button class="btn-add admin-only" id="btn-add-presente" onclick="openPresenteModal()" style="display:none">+ Novo Presente</button>
+      <button class="btn-add" id="btn-add-presente" onclick="openPresenteModal()">+ Novo Presente</button>
     </div>
     <div class="gifts-grid" id="gifts-grid">
       <p class="list-empty">Carregando...</p>
@@ -539,7 +539,7 @@ nav{
     <div class="filter-row">
       <button class="filter-btn active" onclick="filterFotos('all',this)">Todas</button>
       <button class="filter-btn" onclick="filterFotos('public',this)">🌐 Públicas</button>
-      <button class="filter-btn admin-only" id="filter-priv" onclick="filterFotos('private',this)" style="display:none">🔒 Privadas</button>
+      <button class="filter-btn" id="filter-priv" onclick="filterFotos('private',this)">🔒 Privadas</button>
     </div>
     <div class="gallery-grid" id="gallery-grid"></div>
     <label class="photo-upload-btn" for="photo-upload">
@@ -602,6 +602,24 @@ nav{
       <p class="sec-sub">Detalhes da festa e anotações</p>
     </div>
     <div class="grid2">
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-icon" style="background:rgba(201,169,110,.15)">🦋</div>
+          <span class="card-title">Aniversariante</span>
+        </div>
+        <div class="card-body config-form">
+          <div class="field"><label>Nome</label><input class="inp inp-full" id="cfg-aniver-nome" placeholder="Nome do aniversariante"></div>
+          <div class="field"><label>Idade</label><input class="inp inp-full" type="number" min="0" id="cfg-aniver-idade" placeholder="15"></div>
+          <div class="field">
+            <label>Foto</label>
+            <div style="display:flex;align-items:center;gap:.8rem">
+              <img id="cfg-aniver-foto-preview" src="" style="width:64px;height:64px;border-radius:50%;object-fit:cover;display:none;border:2px solid var(--gold)">
+              <input type="file" accept="image/*" class="inp inp-full" id="cfg-aniver-foto-file">
+            </div>
+          </div>
+          <button class="btn-primary" onclick="saveAniversariante()">💾 Salvar Aniversariante</button>
+        </div>
+      </div>
       <div class="card">
         <div class="card-hdr">
           <div class="card-icon" style="background:rgba(201,169,110,.15)">🎀</div>
@@ -850,7 +868,7 @@ function updateCountdown() {
   const [y,m,day] = d.split('-').map(Number);
   const fest = new Date(y,m-1,day,12,0,0);
   const diff = fest - new Date();
-  if (diff<=0) { el.innerHTML='<p class="cdown-msg">🎉 A festa chegou! Parabéns, Eloisa! 🦋</p>'; return; }
+  if (diff<=0) { el.innerHTML=`<p class="cdown-msg">🎉 A festa chegou! Parabéns, ${esc(configCache?.nome_aniversariante||'Eloisa')}! 🦋</p>`; return; }
   const s=Math.floor(diff/1000),min=Math.floor(s/60),hr=Math.floor(min/60),days=Math.floor(hr/24);
   const p=n=>String(n).padStart(2,'0');
   el.innerHTML=`<div class="cdown-boxes">
@@ -1098,10 +1116,8 @@ function renderPresentes(list) {
     const img = p.imagem_url
       ? `<img src="${esc(p.imagem_url)}" class="gift-img" alt="">`
       : `<div class="gift-img-placeholder">🎁</div>`;
-    const adminBtns = currentType==='admin'
-      ? `<button class="btn-add btn-sm" onclick="openPresenteModal('${p.id}')">✏️</button>
-         <button class="btn-add btn-sm" style="background:rgba(248,113,113,.2);color:var(--red)" onclick="removePresente('${p.id}')">✕</button>`
-      : '';
+    const adminBtns = `<button class="btn-add btn-sm" onclick="openPresenteModal('${p.id}')">✏️</button>
+         <button class="btn-add btn-sm" style="background:rgba(248,113,113,.2);color:var(--red)" onclick="removePresente('${p.id}')">✕</button>`;
     const reservado = p.reservado
       ? `<div class="gift-reserved">✅ Presente já escolhido</div>`
       : `<button class="btn-add btn-sm" style="width:100%" onclick="reservarPresente('${p.id}','${esc(p.nome)}')">🎁 Vou presentear!</button>`;
@@ -1203,7 +1219,7 @@ function renderFotos(list) {
       <img src="${esc(f.url)}" alt="${esc(f.titulo||'')}" loading="lazy">
       <div class="gallery-overlay">
         <span class="gallery-caption">${esc(f.titulo||f.legenda||'')}</span>
-        ${currentType==='admin'?`<button class="btn-icon" style="opacity:1;color:#fff;font-size:.75rem" onclick="event.stopPropagation();removeFoto('${f.id}','${esc(f.url)}')">✕</button>`:''}
+        <button class="btn-icon" style="opacity:1;color:#fff;font-size:.75rem" onclick="event.stopPropagation();removeFoto('${f.id}','${esc(f.url)}')">✕</button>
       </div>
       <span class="vis-badge">${f.visibilidade==='public'?'🌐':'🔒'}</span>
     </div>`).join('');
@@ -1287,6 +1303,13 @@ async function loadConfig() {
   ]);
   if (cfg) {
     configCache=cfg;
+    document.getElementById('cfg-aniver-nome').value  = cfg.nome_aniversariante||'';
+    document.getElementById('cfg-aniver-idade').value = cfg.idade_aniversariante||'';
+    if (cfg.foto_principal_url) {
+      const prev = document.getElementById('cfg-aniver-foto-preview');
+      prev.src = cfg.foto_principal_url;
+      prev.style.display = '';
+    }
     if (cfg.data_festa) document.getElementById('cfg-data').value=cfg.data_festa;
     document.getElementById('cfg-local').value   = cfg.local_festa||'';
     document.getElementById('cfg-horario').value = cfg.horario||'';
@@ -1294,6 +1317,32 @@ async function loadConfig() {
     document.getElementById('cfg-msg').value     = cfg.mensagem_especial||'';
   }
   if (nota) document.getElementById('notes-area').value = nota.conteudo||'';
+}
+
+async function saveAniversariante() {
+  const nome  = document.getElementById('cfg-aniver-nome').value.trim();
+  const idade = document.getElementById('cfg-aniver-idade').value || null;
+  const payload = { id:1, nome_aniversariante: nome||null, idade_aniversariante: idade };
+  const file = document.getElementById('cfg-aniver-foto-file').files[0];
+  if (file) {
+    if (file.size > 5*1024*1024) { toast('Imagem muito grande (máx 5MB)','error'); return; }
+    const ext = file.name.split('.').pop();
+    const path = `aniversariante-${Date.now()}.${ext}`;
+    const { data:up } = await _sb.storage.from('fotos-publicas').upload(path, file, { upsert:true });
+    if (up) {
+      const { data:pub } = _sb.storage.from('fotos-publicas').getPublicUrl(path);
+      payload.foto_principal_url = pub.publicUrl;
+    }
+  }
+  const { error } = await _sb.from('configuracoes').upsert([payload]);
+  if (error) { toast('Erro ao salvar','error'); return; }
+  configCache = {...configCache, ...payload};
+  if (payload.foto_principal_url) {
+    const prev = document.getElementById('cfg-aniver-foto-preview');
+    prev.src = payload.foto_principal_url;
+    prev.style.display = '';
+  }
+  toast('Aniversariante salvo! 🦋');
 }
 
 async function saveConfig() {

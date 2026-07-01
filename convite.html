@@ -197,7 +197,8 @@ footer strong{color:var(--gold)}
 <!-- HERO -->
 <div class="hero">
   <span class="hero-crown">🦋</span>
-  <h1>15 Anos de <em>Eloisa</em></h1>
+  <img id="hero-foto" src="" alt="" style="display:none;width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);margin:0 auto 1rem">
+  <h1><span id="hero-idade">15</span> Anos de <em id="hero-nome">Eloisa</em></h1>
   <p class="hero-sub">Uma noite especial para celebrar você</p>
   <div class="divider"><span>✦</span></div>
   <p class="hero-msg" id="hero-msg">
@@ -232,7 +233,7 @@ footer strong{color:var(--gold)}
 <!-- PRESENTES -->
 <div class="section" id="presentes">
   <p class="sec-title">🎁 Sugestões de Presentes</p>
-  <p class="sec-sub">Ideias para presentear a Eloisa</p>
+  <p class="sec-sub">Ideias para presentear <span id="presentes-nome">a Eloisa</span></p>
   <div class="gifts-grid" id="gifts-grid">
     <p class="empty-msg">Carregando presentes...</p>
   </div>
@@ -255,7 +256,7 @@ footer strong{color:var(--gold)}
 <!-- FOOTER -->
 <footer>
   <span class="crown">🦋</span>
-  Com muito amor e alegria, a família de <strong>Eloisa</strong> aguarda você.
+  Com muito amor e alegria, a família de <strong id="footer-nome">Eloisa</strong> aguarda você.
 </footer>
 
 <!-- MODAL RESERVAR -->
@@ -308,6 +309,17 @@ async function init() {
   const { data:cfg } = await _sb.from('configuracoes').select('*').eq('id',1).single();
   if (cfg) {
     configData = cfg;
+    if (cfg.nome_aniversariante) {
+      document.getElementById('hero-nome').textContent = cfg.nome_aniversariante;
+      document.getElementById('footer-nome').textContent = cfg.nome_aniversariante;
+      document.getElementById('presentes-nome').textContent = cfg.nome_aniversariante;
+    }
+    if (cfg.idade_aniversariante) document.getElementById('hero-idade').textContent = cfg.idade_aniversariante;
+    if (cfg.foto_principal_url) {
+      const foto = document.getElementById('hero-foto');
+      foto.src = cfg.foto_principal_url;
+      foto.style.display = '';
+    }
     if (cfg.data_festa) {
       const d = new Date(cfg.data_festa+'T12:00:00');
       document.getElementById('det-data').textContent = d.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
@@ -359,7 +371,7 @@ function updateCountdown() {
   const [y,m,d] = configData.data_festa.split('-').map(Number);
   const fest = new Date(y,m-1,d,12,0,0);
   const diff = fest - new Date();
-  if (diff<=0) { el.innerHTML='<p class="cdown-msg" style="font-family:Playfair Display,serif;font-size:1.3rem;color:var(--gold-light);font-style:italic">🎉 A festa chegou! Parabéns, Eloisa!</p>'; return; }
+  if (diff<=0) { el.innerHTML=`<p class="cdown-msg" style="font-family:Playfair Display,serif;font-size:1.3rem;color:var(--gold-light);font-style:italic">🎉 A festa chegou! Parabéns, ${esc(configData.nome_aniversariante||'Eloisa')}!</p>`; return; }
   const s=Math.floor(diff/1000),min=Math.floor(s/60),hr=Math.floor(min/60),days=Math.floor(hr/24);
   el.innerHTML=`<div class="cdown-boxes">
     <div class="cdown-box"><div class="cdown-num">${p(Math.floor(days/30))}</div><div class="cdown-lbl">Meses</div></div>
