@@ -119,6 +119,27 @@ CREATE TABLE IF NOT EXISTS playlist (
 INSERT INTO playlist (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
 
 -- ════════════════════════════════════════════════════
+-- CORREÇÃO DE ESQUEMA ANTIGO (tabelas criadas antes deste script,
+-- ex: com "created_at" em vez de "criado_em" — seguro de rodar sempre)
+-- ════════════════════════════════════════════════════
+ALTER TABLE convidados ADD COLUMN IF NOT EXISTS criado_em TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE checklists ADD COLUMN IF NOT EXISTS criado_em TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE orcamentos ADD COLUMN IF NOT EXISTS criado_em TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE presentes  ADD COLUMN IF NOT EXISTS criado_em TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE fotos      ADD COLUMN IF NOT EXISTS criado_em TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE usuarios   ADD COLUMN IF NOT EXISTS criado_em TIMESTAMPTZ DEFAULT NOW();
+
+DO $$
+DECLARE t TEXT;
+BEGIN
+  FOREACH t IN ARRAY ARRAY['convidados','checklists','orcamentos','presentes','fotos','usuarios'] LOOP
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name=t AND column_name='created_at') THEN
+      EXECUTE format('UPDATE %I SET criado_em = created_at WHERE criado_em IS NULL', t);
+    END IF;
+  END LOOP;
+END $$;
+
+-- ════════════════════════════════════════════════════
 -- FUNÇÕES AUXILIARES
 -- ════════════════════════════════════════════════════
 
